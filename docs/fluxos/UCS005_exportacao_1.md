@@ -2,30 +2,64 @@
 
 [Índice de fluxos](../fluxos.md) · [README](../../README.md) · [Cenário original](../../functional_tests/ativos/inversores/UCS005_exportacao_1.py)
 
-O diagrama resume o fluxo principal e as variantes indicadas. Antes de cada etapa, conferir seus bloqueios; o ramo “Sim” é condicional e não declara que já houve validação. Os fluxos alternativos e os resultados completos estão descritos abaixo.
+Os losangos representam a avaliação da etapa no cenário, não novos controles da interface. **Falha esperada e corretamente tratada pode atender ao cenário negativo.** Uma falha inesperada interrompe apenas as etapas dependentes desta execução. Essa interrupção é uma orientação de teste, não uma regra do sistema. Não há repetição automática, rollback, preservação de campos ou retomada presumidos. Os acréscimos marcados **a validar** continuam sujeitos ao aceite dos stakeholders.
 
 ## Fluxo visual
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
     p1["Filtrar 23 alvos e excluir 3 controles fictícios"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["PENDÊNCIA: resposta à falha de consulta e recuperação"]
+    f1 --> parar
+    q1 -->|Sim| p2
     p2["Conciliar formatos: PDF e Excel versus PDF e CSV"]
-    p1 --> p2
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    f2 --> parar
+    q2 -->|Sim| p3
     p3["Solicitar formato e conferir entrega"]
-    p2 --> p3
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["Informar falha; não entregar erro como relatório - a validar"]
+    f3 --> parar
+    q3 -->|Sim| p4
     p4["Conferir conjunto completo em páginas diferentes"]
-    p3 --> p4
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f4 --> parar
+    q4 -->|Sim| p5
     p5["Comparar ordenação e colunas especificadas"]
-    p4 --> p5
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f5 --> parar
+    q5 -->|Sim| p6
     p6["Manter avaliação de campos indefinidos bloqueada"]
-    p5 --> p6
+    p6 --> q6{"Etapa produziu o resultado esperado?"}
+    q6 -->|Não ou não comprovado| f6["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    f6 --> parar
+    q6 -->|Sim| concluir
     classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5,f6 pendencia
 ```
+
+## Falhas, recusas e pendências por etapa
+
+As referências CAxx abaixo são rótulos dentro da Feature indicada, não IDs globais novos. Uma mensagem de falha não comprova que nenhuma gravação ocorreu; em perda de resposta, o estado final permanece a verificar.
+
+| Etapa ou variante | Resposta prevista ou pendência | Base |
+| --- | --- | --- |
+| 1. Filtrar 23 alvos e excluir 3 controles fictícios | PENDÊNCIA: resposta à falha de consulta e recuperação. Não continuar etapas dependentes. | Consolidação de Consulta: tratamento detalhado e recuperação pendentes |
+| 2. Conciliar formatos: PDF e Excel versus PDF e CSV | PENDÊNCIA: não há decisão ou condição suficiente para esta etapa. Não continuar etapas dependentes. | Pendências do próprio cenário; não é falha comprovada do sistema |
+| 3. Solicitar formato e conferir entrega | Informar falha; não entregar erro como relatório - a validar. Não continuar etapas dependentes. | #35875 CA06, acréscimo a validar |
+| 4. Conferir conjunto completo em páginas diferentes | Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes. Não continuar etapas dependentes. | Resultados esperados do cenário; não há resposta automática definida para divergência constatada pelo avaliador |
+| 5. Comparar ordenação e colunas especificadas | Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes. Não continuar etapas dependentes. | Resultados esperados do cenário; não há resposta automática definida para divergência constatada pelo avaliador |
+| 6. Manter avaliação de campos indefinidos bloqueada | PENDÊNCIA: não há decisão ou condição suficiente para esta etapa. Não continuar etapas dependentes. | Pendências do próprio cenário; não é falha comprovada do sistema |
 
 ## Especificação completa
 

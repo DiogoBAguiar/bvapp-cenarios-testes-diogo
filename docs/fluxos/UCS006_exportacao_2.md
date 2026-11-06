@@ -2,28 +2,58 @@
 
 [Índice de fluxos](../fluxos.md) · [README](../../README.md) · [Cenário original](../../functional_tests/ativos/inversores/UCS006_exportacao_2.py)
 
-O diagrama resume o fluxo principal e as variantes indicadas. Antes de cada etapa, conferir seus bloqueios; o ramo “Sim” é condicional e não declara que já houve validação. Os fluxos alternativos e os resultados completos estão descritos abaixo.
+Os losangos representam a avaliação da etapa no cenário, não novos controles da interface. **Falha esperada e corretamente tratada pode atender ao cenário negativo.** Uma falha inesperada interrompe apenas as etapas dependentes desta execução. Essa interrupção é uma orientação de teste, não uma regra do sistema. Não há repetição automática, rollback, preservação de campos ou retomada presumidos. Os acréscimos marcados **a validar** continuam sujeitos ao aceite dos stakeholders.
 
 ## Fluxo visual
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
     p1["Selecionar o inversor alvo"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f1 --> parar
+    q1 -->|Sim| p2
     p2["Solicitar ficha PDF individual"]
-    p1 --> p2
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["Informar falha; não entregar erro como relatório - a validar"]
+    f2 --> parar
+    q2 -->|Sim| p3
     p3["Conferir entrega e identidade do alvo"]
-    p2 --> p3
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["Informar falha; não entregar erro como relatório - a validar"]
+    f3 --> parar
+    q3 -->|Sim| p4
     p4["Na variante indisponível, conferir resposta prevista"]
-    p3 --> p4
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["Se não informar indisponibilidade ou entregar outro registro: divergência"]
+    f4 --> parar
+    q4 -->|Sim| p5
     p5["Manter campos e autorização pendentes bloqueados"]
-    p4 --> p5
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    f5 --> parar
+    q5 -->|Sim| concluir
     classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5 pendencia
 ```
+
+## Falhas, recusas e pendências por etapa
+
+As referências CAxx abaixo são rótulos dentro da Feature indicada, não IDs globais novos. Uma mensagem de falha não comprova que nenhuma gravação ocorreu; em perda de resposta, o estado final permanece a verificar.
+
+| Etapa ou variante | Resposta prevista ou pendência | Base |
+| --- | --- | --- |
+| 1. Selecionar o inversor alvo | Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes. Não continuar etapas dependentes. | Resultados esperados do cenário; não há resposta automática definida para divergência constatada pelo avaliador |
+| 2. Solicitar ficha PDF individual | Informar falha; não entregar erro como relatório - a validar. Não continuar etapas dependentes. | #35875 CA06, acréscimo a validar |
+| 3. Conferir entrega e identidade do alvo | Informar falha; não entregar erro como relatório - a validar. Não continuar etapas dependentes. | #35875 CA06, acréscimo a validar |
+| 4. Na variante indisponível, conferir resposta prevista | Se não informar indisponibilidade ou entregar outro registro: divergência. Não continuar etapas dependentes. | #35875 CA04, a validar |
+| 5. Manter campos e autorização pendentes bloqueados | PENDÊNCIA: não há decisão ou condição suficiente para esta etapa. Não continuar etapas dependentes. | Pendências do próprio cenário; não é falha comprovada do sistema |
 
 ## Especificação completa
 

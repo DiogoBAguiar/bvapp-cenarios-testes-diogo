@@ -54,260 +54,500 @@ Os dez cenários foram revisados contra a base `5f3072939bb7ce5f90b64bf0faa5483b
 
 ## Fluxos visuais
 
-Representações complementares dos cenários, no formato Mermaid usado no [repositório de referência](https://github.com/DiogoBAguiar/atividade-testes-software). Não acrescentam regras nem substituem as especificações. O ramo de validação é condicional: as pendências existentes continuam abertas e devem ser verificadas antes de cada etapa.
+Os losangos representam a avaliação da etapa no cenário, não novos controles da interface. **Falha esperada e corretamente tratada pode atender ao cenário negativo.** Uma falha inesperada interrompe apenas as etapas dependentes desta execução. Essa interrupção é uma orientação de teste, não uma regra do sistema. Não há repetição automática, rollback, preservação de campos ou retomada presumidos. Os acréscimos marcados **a validar** continuam sujeitos ao aceite dos stakeholders.
+
+As respostas documentadas estão detalhadas nas tabelas de cada [fluxo](docs/fluxos.md). Cada operação e conferência tem uma saída para resultado inesperado ou não comprovado.
 
 ### UCS001 — Manter inversores
 
-[Ver descrição completa, alternativas e pendências](docs/fluxos/UCS001_manter_inversores.md)
+[Ver descrição completa, respostas às falhas e pendências](docs/fluxos/UCS001_manter_inversores.md)
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
     p1["Criar inversor com dados obrigatórios"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["Informar falha sem confirmar inclusão - a validar"]
+    f1 --> parar
+    q1 -->|Sim| p2
+    p1 -->|Obrigatório ausente| obrig["Recusar inclusão e indicar campos faltantes"]
+    p1 -->|Série duplicado| dup["Recusar duplicidade e emitir alerta"]
+    obrig --> negativo["AVALIAÇÃO: conferir recusa; encerrar variante negativa sem avançar com cadastro inexistente"]
+    dup --> negativo
     p2["Consultar o mesmo inversor"]
-    p1 --> p2
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["PENDÊNCIA: resposta à falha de consulta e recuperação"]
+    f2 --> parar
+    q2 -->|Sim| p3
     p3["Atualizar potência preservando a série"]
-    p2 --> p3
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["Apresentar motivo da falha sem confirmar edição - a validar"]
+    f3 --> parar
+    q3 -->|Sim| p4
+    p3 -->|Entrada viola validação| validacao["Impedir atualização inválida; conferir recusa e encerrar variante"]
     p4["Consultar os valores atualizados"]
-    p3 --> p4
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["PENDÊNCIA: resposta à falha de consulta e recuperação"]
+    f4 --> parar
+    q4 -->|Sim| p5
     p5["Solicitar e confirmar exclusão sem histórico ou vínculos impeditivos"]
-    p4 --> p5
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["Informar falha sem anunciar exclusão concluída - a validar"]
+    f5 --> parar
+    q5 -->|Sim| p6
     p6["Conferir remoção pelo meio acordado"]
-    p5 --> p6
+    p6 --> q6{"Etapa produziu o resultado esperado?"}
+    q6 -->|Não ou não comprovado| f6["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f6 --> parar
+    q6 -->|Sim| concluir
     classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
-```
-
-### UCS003 — Manter inversor com validação de unicidade e histórico
-
-[Ver descrição completa, alternativas e pendências](docs/fluxos/UCS003_crud_variacao.md)
-
-```mermaid
-flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
-    p1["Criar inversor com série inédita"]
-    p2["Tentar série repetida: recusar duplicidade"]
-    p1 --> p2
-    p3["Consultar cadastro aceito"]
-    p2 --> p3
-    p4["Atualizar potência preservando a série"]
-    p3 --> p4
-    p5["Preparar histórico no mesmo inversor, sem painéis vinculados"]
-    p4 --> p5
-    p6["Solicitar e confirmar exclusão"]
-    p5 --> p6
-    p7["Conferir inativação e histórico preservado"]
-    p6 --> p7
-    classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
-```
-
-### UCS005 — Exportar consulta filtrada de inversores em todos os formatos
-
-[Ver descrição completa, alternativas e pendências](docs/fluxos/UCS005_exportacao_1.md)
-
-```mermaid
-flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
-    p1["Filtrar 23 alvos e excluir 3 controles fictícios"]
-    p2["Conciliar formatos: PDF e Excel versus PDF e CSV"]
-    p1 --> p2
-    p3["Solicitar formato e conferir entrega"]
-    p2 --> p3
-    p4["Conferir conjunto completo em páginas diferentes"]
-    p3 --> p4
-    p5["Comparar ordenação e colunas especificadas"]
-    p4 --> p5
-    p6["Manter avaliação de campos indefinidos bloqueada"]
-    p5 --> p6
-    classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
-```
-
-### UCS006 — Exportar ficha individual de inversores
-
-[Ver descrição completa, alternativas e pendências](docs/fluxos/UCS006_exportacao_2.md)
-
-```mermaid
-flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
-    p1["Selecionar o inversor alvo"]
-    p2["Solicitar ficha PDF individual"]
-    p1 --> p2
-    p3["Conferir entrega e identidade do alvo"]
-    p2 --> p3
-    p4["Na variante indisponível, conferir resposta prevista"]
-    p3 --> p4
-    p5["Manter campos e autorização pendentes bloqueados"]
-    p4 --> p5
-    classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
-```
-
-### UCS007 — Tratar autorização e falha de exportação de inversores
-
-[Ver descrição completa, alternativas e pendências](docs/fluxos/UCS007_exportacao_3.md)
-
-```mermaid
-flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
-    p1["Definir matriz de autorização por modalidade"]
-    p2["Após validação, solicitar exportação com perfil autorizado"]
-    p1 --> p2
-    p3["Conferir indicação de preparação proposta"]
-    p2 --> p3
-    p4["Avaliar falha controlada na exportação coletiva"]
-    p3 --> p4
-    p5["Avaliar falha controlada na ficha individual"]
-    p4 --> p5
-    p6["Registrar observações sem presumir política de retomada"]
-    p5 --> p6
-    classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5,f6 pendencia
 ```
 
 ### UCS002 — Manter marcas
 
-[Ver descrição completa, alternativas e pendências](docs/fluxos/UCS002_manter_marcas.md)
+[Ver descrição completa, respostas às falhas e pendências](docs/fluxos/UCS002_manter_marcas.md)
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
     p1["Criar fabricante com documento válido"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["PENDÊNCIA: resposta à falha técnica de inclusão não definida"]
+    f1 --> parar
+    q1 -->|Sim| p2
+    p1 -->|Obrigatório ausente| obrig["Recusar inclusão e indicar campos faltantes"]
+    p1 -->|Nome duplicado| dup["Recusar duplicidade e emitir alerta"]
+    obrig --> negativo["AVALIAÇÃO: conferir recusa; encerrar variante negativa sem avançar com cadastro inexistente"]
+    dup --> negativo
     p2["Consultar fabricante e contatos"]
-    p1 --> p2
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["Distinguir falha de consulta vazia - a validar; recuperação pendente"]
+    f2 --> parar
+    q2 -->|Sim| p3
     p3["Atualizar nome do mesmo fabricante"]
-    p2 --> p3
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["PENDÊNCIA: resposta à falha técnica de edição não definida"]
+    f3 --> parar
+    q3 -->|Sim| p4
+    p3 -->|Entrada viola validação| validacao["Impedir atualização inválida; conferir recusa e encerrar variante"]
     p4["Consultar os valores atualizados"]
-    p3 --> p4
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["Distinguir falha de consulta vazia - a validar; recuperação pendente"]
+    f4 --> parar
+    q4 -->|Sim| p5
     p5["Preparar vínculo e cancelar uma exclusão"]
-    p4 --> p5
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["Se alteração ocorrer apesar do cancelamento: divergência; recuperação pendente"]
+    f5 --> parar
+    q5 -->|Sim| p6
     p6["Confirmar exclusão com vínculo"]
-    p5 --> p6
+    p6 --> q6{"Etapa produziu o resultado esperado?"}
+    q6 -->|Não ou não comprovado| f6["Informar falha sem anunciar exclusão concluída - a validar"]
+    f6 --> parar
+    q6 -->|Sim| p7
     p7["Conferir inativação e vínculos preservados"]
-    p6 --> p7
+    p7 --> q7{"Etapa produziu o resultado esperado?"}
+    q7 -->|Não ou não comprovado| f7["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f7 --> parar
+    q7 -->|Sim| concluir
     classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5,f6,f7 pendencia
+```
+
+### UCS003 — Manter inversor com validação de unicidade e histórico
+
+[Ver descrição completa, respostas às falhas e pendências](docs/fluxos/UCS003_crud_variacao.md)
+
+```mermaid
+flowchart TD
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
+    p1["Criar inversor com série inédita"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["Informar falha sem confirmar inclusão - a validar"]
+    f1 --> parar
+    q1 -->|Sim| p2
+    p1 -->|Obrigatório ausente| obrig["Recusar inclusão e indicar campos faltantes"]
+    p1 -->|Série duplicado| dup["Recusar duplicidade e emitir alerta"]
+    obrig --> negativo["AVALIAÇÃO: conferir recusa; encerrar variante negativa sem avançar com cadastro inexistente"]
+    dup --> negativo
+    p2["Tentar série repetida: recusar duplicidade"]
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f2 --> parar
+    q2 -->|Sim| p3
+    p3["Consultar cadastro aceito"]
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["PENDÊNCIA: resposta à falha de consulta e recuperação"]
+    f3 --> parar
+    q3 -->|Sim| p4
+    p4["Atualizar potência preservando a série"]
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["Apresentar motivo da falha sem confirmar edição - a validar"]
+    f4 --> parar
+    q4 -->|Sim| p5
+    p4 -->|Entrada viola validação| validacao["Impedir atualização inválida; conferir recusa e encerrar variante"]
+    p5["Preparar histórico no mesmo inversor, sem painéis vinculados"]
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    f5 --> parar
+    q5 -->|Sim| p6
+    p6["Solicitar e confirmar exclusão"]
+    p6 --> q6{"Etapa produziu o resultado esperado?"}
+    q6 -->|Não ou não comprovado| f6["Informar falha sem anunciar exclusão concluída - a validar"]
+    f6 --> parar
+    q6 -->|Sim| p7
+    p7["Conferir inativação e histórico preservado"]
+    p7 --> q7{"Etapa produziu o resultado esperado?"}
+    q7 -->|Não ou não comprovado| f7["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f7 --> parar
+    q7 -->|Sim| concluir
+    classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5,f6,f7 pendencia
 ```
 
 ### UCS004 — Manter fabricante com validação de contato e cancelamento
 
-[Ver descrição completa, alternativas e pendências](docs/fluxos/UCS004_crud_variacao.md)
+[Ver descrição completa, respostas às falhas e pendências](docs/fluxos/UCS004_crud_variacao.md)
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
     p1["Criar fabricante"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["PENDÊNCIA: resposta à falha técnica de inclusão não definida"]
+    f1 --> parar
+    q1 -->|Sim| p2
+    p1 -->|Obrigatório ausente| obrig["Recusar inclusão e indicar campos faltantes"]
+    p1 -->|Nome duplicado| dup["Recusar duplicidade e emitir alerta"]
+    obrig --> negativo["AVALIAÇÃO: conferir recusa; encerrar variante negativa sem avançar com cadastro inexistente"]
+    dup --> negativo
     p2["Consultar identificação e contato"]
-    p1 --> p2
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["Distinguir falha de consulta vazia - a validar; recuperação pendente"]
+    f2 --> parar
+    q2 -->|Sim| p3
     p3["Tentar e-mail inválido: expectativa de recusa a validar"]
-    p2 --> p3
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f3 --> parar
+    q3 -->|Sim| p4
     p4["Corrigir e cancelar edição: expectativa a validar"]
-    p3 --> p4
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["Se alteração ocorrer apesar do cancelamento: divergência; recuperação pendente"]
+    f4 --> parar
+    q4 -->|Sim| p5
     p5["Reabrir e confirmar edição válida"]
-    p4 --> p5
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["PENDÊNCIA: resposta à falha técnica de edição não definida"]
+    f5 --> parar
+    q5 -->|Sim| p6
     p6["Cancelar exclusão e conferir preservação"]
-    p5 --> p6
+    p6 --> q6{"Etapa produziu o resultado esperado?"}
+    q6 -->|Não ou não comprovado| f6["Se alteração ocorrer apesar do cancelamento: divergência; recuperação pendente"]
+    f6 --> parar
+    q6 -->|Sim| p7
     p7["Confirmar exclusão com vínculo"]
-    p6 --> p7
+    p7 --> q7{"Etapa produziu o resultado esperado?"}
+    q7 -->|Não ou não comprovado| f7["Informar falha sem anunciar exclusão concluída - a validar"]
+    f7 --> parar
+    q7 -->|Sim| p8
     p8["Conferir inativação e referências preservadas"]
-    p7 --> p8
+    p8 --> q8{"Etapa produziu o resultado esperado?"}
+    q8 -->|Não ou não comprovado| f8["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f8 --> parar
+    q8 -->|Sim| concluir
     classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5,f6,f7,f8 pendencia
+```
+
+### UCS005 — Exportar consulta filtrada de inversores em todos os formatos
+
+[Ver descrição completa, respostas às falhas e pendências](docs/fluxos/UCS005_exportacao_1.md)
+
+```mermaid
+flowchart TD
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
+    p1["Filtrar 23 alvos e excluir 3 controles fictícios"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["PENDÊNCIA: resposta à falha de consulta e recuperação"]
+    f1 --> parar
+    q1 -->|Sim| p2
+    p2["Conciliar formatos: PDF e Excel versus PDF e CSV"]
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    f2 --> parar
+    q2 -->|Sim| p3
+    p3["Solicitar formato e conferir entrega"]
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["Informar falha; não entregar erro como relatório - a validar"]
+    f3 --> parar
+    q3 -->|Sim| p4
+    p4["Conferir conjunto completo em páginas diferentes"]
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f4 --> parar
+    q4 -->|Sim| p5
+    p5["Comparar ordenação e colunas especificadas"]
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f5 --> parar
+    q5 -->|Sim| p6
+    p6["Manter avaliação de campos indefinidos bloqueada"]
+    p6 --> q6{"Etapa produziu o resultado esperado?"}
+    q6 -->|Não ou não comprovado| f6["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    f6 --> parar
+    q6 -->|Sim| concluir
+    classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5,f6 pendencia
+```
+
+### UCS006 — Exportar ficha individual de inversores
+
+[Ver descrição completa, respostas às falhas e pendências](docs/fluxos/UCS006_exportacao_2.md)
+
+```mermaid
+flowchart TD
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
+    p1["Selecionar o inversor alvo"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f1 --> parar
+    q1 -->|Sim| p2
+    p2["Solicitar ficha PDF individual"]
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["Informar falha; não entregar erro como relatório - a validar"]
+    f2 --> parar
+    q2 -->|Sim| p3
+    p3["Conferir entrega e identidade do alvo"]
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["Informar falha; não entregar erro como relatório - a validar"]
+    f3 --> parar
+    q3 -->|Sim| p4
+    p4["Na variante indisponível, conferir resposta prevista"]
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["Se não informar indisponibilidade ou entregar outro registro: divergência"]
+    f4 --> parar
+    q4 -->|Sim| p5
+    p5["Manter campos e autorização pendentes bloqueados"]
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    f5 --> parar
+    q5 -->|Sim| concluir
+    classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5 pendencia
+```
+
+### UCS007 — Tratar autorização e falha de exportação de inversores
+
+[Ver descrição completa, respostas às falhas e pendências](docs/fluxos/UCS007_exportacao_3.md)
+
+```mermaid
+flowchart TD
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
+    p1["Definir matriz de autorização por modalidade"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    f1 --> parar
+    q1 -->|Sim| p2
+    p2["Após validação, solicitar exportação com perfil autorizado"]
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["Informar falha; não entregar erro como relatório - a validar"]
+    f2 --> parar
+    q2 -->|Sim| p3
+    p3["Conferir indicação de preparação proposta"]
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f3 --> parar
+    q3 -->|Sim| p4
+    p4["Avaliar falha controlada na exportação coletiva"]
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["Falha não informada ou erro entregue como relatório: divergência da proposta"]
+    f4 --> parar
+    q4 -->|Sim| p5
+    p5["Avaliar falha controlada na ficha individual"]
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["Falha não informada ou erro entregue como relatório: divergência da proposta"]
+    f5 --> parar
+    q5 -->|Sim| p6
+    p6["Registrar observações sem presumir política de retomada"]
+    p6 --> q6{"Etapa produziu o resultado esperado?"}
+    q6 -->|Não ou não comprovado| f6["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f6 --> parar
+    q6 -->|Sim| concluir
+    classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5,f6 pendencia
 ```
 
 ### UCS008 — Exportar consulta filtrada de fabricantes em todos os formatos
 
-[Ver descrição completa, alternativas e pendências](docs/fluxos/UCS008_exportacao_1.md)
+[Ver descrição completa, respostas às falhas e pendências](docs/fluxos/UCS008_exportacao_1.md)
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
     p1["Filtrar 23 fabricantes e excluir 3 controles fictícios"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["Distinguir falha de consulta vazia - a validar; recuperação pendente"]
+    f1 --> parar
+    q1 -->|Sim| p2
     p2["Solicitar PDF e CSV previstos na revisão"]
-    p1 --> p2
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["Informar falha; não entregar erro como relatório - a validar"]
+    f2 --> parar
+    q2 -->|Sim| p3
     p3["Conferir entrega proposta"]
-    p2 --> p3
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["Informar falha; não entregar erro como relatório - a validar"]
+    f3 --> parar
+    q3 -->|Sim| p4
     p4["Conferir conjunto completo em páginas diferentes"]
-    p3 --> p4
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f4 --> parar
+    q4 -->|Sim| p5
     p5["Comparar ordenação e colunas após validação"]
-    p4 --> p5
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f5 --> parar
+    q5 -->|Sim| p6
     p6["Manter campos indefinidos bloqueados"]
-    p5 --> p6
+    p6 --> q6{"Etapa produziu o resultado esperado?"}
+    q6 -->|Não ou não comprovado| f6["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    f6 --> parar
+    q6 -->|Sim| concluir
     classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5,f6 pendencia
 ```
 
 ### UCS009 — Exportar ficha individual de fabricantes
 
-[Ver descrição completa, alternativas e pendências](docs/fluxos/UCS009_exportacao_2.md)
+[Ver descrição completa, respostas às falhas e pendências](docs/fluxos/UCS009_exportacao_2.md)
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
     p1["Selecionar fabricante alvo"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f1 --> parar
+    q1 -->|Sim| p2
     p2["Solicitar PDF individual e conferir entrega proposta"]
-    p1 --> p2
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["Informar falha; não entregar erro como relatório - a validar"]
+    f2 --> parar
+    q2 -->|Sim| p3
     p3["Conferir identidade do fabricante"]
-    p2 --> p3
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f3 --> parar
+    q3 -->|Sim| p4
     p4["Conferir ativos associados não excluídos por série, tipo e situação"]
-    p3 --> p4
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f4 --> parar
+    q4 -->|Sim| p5
     p5["Na variante indisponível, conferir resposta prevista"]
-    p4 --> p5
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["Se não informar indisponibilidade ou entregar outro registro: divergência"]
+    f5 --> parar
+    q5 -->|Sim| p6
     p6["Manter campos e autorização pendentes bloqueados"]
-    p5 --> p6
+    p6 --> q6{"Etapa produziu o resultado esperado?"}
+    q6 -->|Não ou não comprovado| f6["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    f6 --> parar
+    q6 -->|Sim| concluir
     classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5,f6 pendencia
 ```
 
 ### UCS010 — Tratar autorização e falha de exportação de fabricantes
 
-[Ver descrição completa, alternativas e pendências](docs/fluxos/UCS010_exportacao_3.md)
+[Ver descrição completa, respostas às falhas e pendências](docs/fluxos/UCS010_exportacao_3.md)
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
     p1["Definir matriz de autorização por modalidade"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    f1 --> parar
+    q1 -->|Sim| p2
     p2["Após validação, solicitar exportação com perfil autorizado"]
-    p1 --> p2
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["Informar falha; não entregar erro como relatório - a validar"]
+    f2 --> parar
+    q2 -->|Sim| p3
     p3["Conferir indicação de preparação proposta"]
-    p2 --> p3
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f3 --> parar
+    q3 -->|Sim| p4
     p4["Avaliar falha controlada na exportação coletiva"]
-    p3 --> p4
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["Falha não informada ou erro entregue como relatório: divergência da proposta"]
+    f4 --> parar
+    q4 -->|Sim| p5
     p5["Avaliar falha controlada na ficha individual"]
-    p4 --> p5
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["Falha não informada ou erro entregue como relatório: divergência da proposta"]
+    f5 --> parar
+    q5 -->|Sim| p6
     p6["Registrar observações sem presumir política de retomada"]
-    p5 --> p6
+    p6 --> q6{"Etapa produziu o resultado esperado?"}
+    q6 -->|Não ou não comprovado| f6["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f6 --> parar
+    q6 -->|Sim| concluir
     classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5,f6 pendencia
 ```

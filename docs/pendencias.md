@@ -45,3 +45,7 @@ FP1 e A1: BLOQUEADOS até aprovação da matriz de autorização por modalidade.
 ## Como encerrar uma pendência
 
 Registrar a decisão, responsável pela validação, data e referência ao requisito atualizado. Até isso ocorrer, a etapa dependente permanece BLOQUEADA para aceite. Não escolher valores, mensagens, perfis ou política de recuperação. A autoria acadêmica permanece de Diogo; esta revisão não declara apresentação ou aprovação humana concluída.
+
+## Respostas a falhas e continuidade dos fluxos
+
+As tabelas em [fluxos](fluxos.md) identificam por etapa as respostas documentadas e as lacunas. Permanecem pendentes: resposta técnica de inclusão/edição de fabricantes, detalhes da falha de consulta de inversores, recuperação após falha ou perda de resposta, preservação de campos, estado final de gravações interrompidas e política de nova tentativa. Os acréscimos sobre falha de inclusão/edição de inversores, exclusão e exportação continuam a validar. Uma divergência constatada na conferência não autoriza inventar autocorreção do sistema.

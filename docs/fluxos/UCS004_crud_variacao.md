@@ -2,34 +2,81 @@
 
 [Índice de fluxos](../fluxos.md) · [README](../../README.md) · [Cenário original](../../functional_tests/ativos/marcas/UCS004_crud_variacao.py)
 
-O diagrama resume o fluxo principal e as variantes indicadas. Antes de cada etapa, conferir seus bloqueios; o ramo “Sim” é condicional e não declara que já houve validação. Os fluxos alternativos e os resultados completos estão descritos abaixo.
+Os losangos representam a avaliação da etapa no cenário, não novos controles da interface. **Falha esperada e corretamente tratada pode atender ao cenário negativo.** Uma falha inesperada interrompe apenas as etapas dependentes desta execução. Essa interrupção é uma orientação de teste, não uma regra do sistema. Não há repetição automática, rollback, preservação de campos ou retomada presumidos. Os acréscimos marcados **a validar** continuam sujeitos ao aceite dos stakeholders.
 
 ## Fluxo visual
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
     p1["Criar fabricante"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["PENDÊNCIA: resposta à falha técnica de inclusão não definida"]
+    f1 --> parar
+    q1 -->|Sim| p2
+    p1 -->|Obrigatório ausente| obrig["Recusar inclusão e indicar campos faltantes"]
+    p1 -->|Nome duplicado| dup["Recusar duplicidade e emitir alerta"]
+    obrig --> negativo["AVALIAÇÃO: conferir recusa; encerrar variante negativa sem avançar com cadastro inexistente"]
+    dup --> negativo
     p2["Consultar identificação e contato"]
-    p1 --> p2
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["Distinguir falha de consulta vazia - a validar; recuperação pendente"]
+    f2 --> parar
+    q2 -->|Sim| p3
     p3["Tentar e-mail inválido: expectativa de recusa a validar"]
-    p2 --> p3
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f3 --> parar
+    q3 -->|Sim| p4
     p4["Corrigir e cancelar edição: expectativa a validar"]
-    p3 --> p4
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["Se alteração ocorrer apesar do cancelamento: divergência; recuperação pendente"]
+    f4 --> parar
+    q4 -->|Sim| p5
     p5["Reabrir e confirmar edição válida"]
-    p4 --> p5
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["PENDÊNCIA: resposta à falha técnica de edição não definida"]
+    f5 --> parar
+    q5 -->|Sim| p6
     p6["Cancelar exclusão e conferir preservação"]
-    p5 --> p6
+    p6 --> q6{"Etapa produziu o resultado esperado?"}
+    q6 -->|Não ou não comprovado| f6["Se alteração ocorrer apesar do cancelamento: divergência; recuperação pendente"]
+    f6 --> parar
+    q6 -->|Sim| p7
     p7["Confirmar exclusão com vínculo"]
-    p6 --> p7
+    p7 --> q7{"Etapa produziu o resultado esperado?"}
+    q7 -->|Não ou não comprovado| f7["Informar falha sem anunciar exclusão concluída - a validar"]
+    f7 --> parar
+    q7 -->|Sim| p8
     p8["Conferir inativação e referências preservadas"]
-    p7 --> p8
+    p8 --> q8{"Etapa produziu o resultado esperado?"}
+    q8 -->|Não ou não comprovado| f8["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f8 --> parar
+    q8 -->|Sim| concluir
     classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5,f6,f7,f8 pendencia
 ```
+
+## Falhas, recusas e pendências por etapa
+
+As referências CAxx abaixo são rótulos dentro da Feature indicada, não IDs globais novos. Uma mensagem de falha não comprova que nenhuma gravação ocorreu; em perda de resposta, o estado final permanece a verificar.
+
+| Etapa ou variante | Resposta prevista ou pendência | Base |
+| --- | --- | --- |
+| 1. Criar fabricante | PENDÊNCIA: resposta à falha técnica de inclusão não definida. Não continuar etapas dependentes. | #24272: critérios de obrigatoriedade e unicidade não definem a resposta a falha técnica |
+| Inclusão recusada por entrada inválida | Não concluir inclusão; indicar campos obrigatórios faltantes ou alertar duplicidade. Recusa correta é resultado esperado da variante negativa. | #24545 e #24556 |
+| 2. Consultar identificação e contato | Distinguir falha de consulta vazia - a validar; recuperação pendente. Não continuar etapas dependentes. | #24273 CA13, acréscimo a validar; recuperação não definida |
+| 3. Tentar e-mail inválido: expectativa de recusa a validar | Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes. Não continuar etapas dependentes. | Resultados esperados do cenário; não há resposta automática definida para divergência constatada pelo avaliador |
+| 4. Corrigir e cancelar edição: expectativa a validar | Se alteração ocorrer apesar do cancelamento: divergência; recuperação pendente. Não continuar etapas dependentes. | Cancelamento descrito no cenário; acréscimo a validar, sem política de recuperação |
+| 5. Reabrir e confirmar edição válida | PENDÊNCIA: resposta à falha técnica de edição não definida. Não continuar etapas dependentes. | #24275: validação de entrada não define falha técnica de gravação |
+| 6. Cancelar exclusão e conferir preservação | Se alteração ocorrer apesar do cancelamento: divergência; recuperação pendente. Não continuar etapas dependentes. | Cancelamento descrito no cenário; acréscimo a validar, sem política de recuperação |
+| 7. Confirmar exclusão com vínculo | Informar falha sem anunciar exclusão concluída - a validar. Não continuar etapas dependentes. | #24278 CA07, acréscimo a validar |
+| 8. Conferir inativação e referências preservadas | Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes. Não continuar etapas dependentes. | Resultados esperados do cenário; não há resposta automática definida para divergência constatada pelo avaliador |
 
 ## Especificação completa
 

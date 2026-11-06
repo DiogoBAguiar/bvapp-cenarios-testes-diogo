@@ -2,30 +2,71 @@
 
 [Índice de fluxos](../fluxos.md) · [README](../../README.md) · [Cenário original](../../functional_tests/ativos/inversores/UCS001_manter_inversores.py)
 
-O diagrama resume o fluxo principal e as variantes indicadas. Antes de cada etapa, conferir seus bloqueios; o ramo “Sim” é condicional e não declara que já houve validação. Os fluxos alternativos e os resultados completos estão descritos abaixo.
+Os losangos representam a avaliação da etapa no cenário, não novos controles da interface. **Falha esperada e corretamente tratada pode atender ao cenário negativo.** Uma falha inesperada interrompe apenas as etapas dependentes desta execução. Essa interrupção é uma orientação de teste, não uma regra do sistema. Não há repetição automática, rollback, preservação de campos ou retomada presumidos. Os acréscimos marcados **a validar** continuam sujeitos ao aceite dos stakeholders.
 
 ## Fluxo visual
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia e ler as pendências"]
-    inicio --> decisao{"Regras necessárias à etapa estão validadas?"}
-    decisao -->|Não| pendente["BLOQUEADO: registrar dúvida para stakeholders"]
-    decisao -->|Sim| p1
+    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
+    inicio --> p1
     p1["Criar inversor com dados obrigatórios"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["Informar falha sem confirmar inclusão - a validar"]
+    f1 --> parar
+    q1 -->|Sim| p2
+    p1 -->|Obrigatório ausente| obrig["Recusar inclusão e indicar campos faltantes"]
+    p1 -->|Série duplicado| dup["Recusar duplicidade e emitir alerta"]
+    obrig --> negativo["AVALIAÇÃO: conferir recusa; encerrar variante negativa sem avançar com cadastro inexistente"]
+    dup --> negativo
     p2["Consultar o mesmo inversor"]
-    p1 --> p2
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["PENDÊNCIA: resposta à falha de consulta e recuperação"]
+    f2 --> parar
+    q2 -->|Sim| p3
     p3["Atualizar potência preservando a série"]
-    p2 --> p3
+    p3 --> q3{"Etapa produziu o resultado esperado?"}
+    q3 -->|Não ou não comprovado| f3["Apresentar motivo da falha sem confirmar edição - a validar"]
+    f3 --> parar
+    q3 -->|Sim| p4
+    p3 -->|Entrada viola validação| validacao["Impedir atualização inválida; conferir recusa e encerrar variante"]
     p4["Consultar os valores atualizados"]
-    p3 --> p4
+    p4 --> q4{"Etapa produziu o resultado esperado?"}
+    q4 -->|Não ou não comprovado| f4["PENDÊNCIA: resposta à falha de consulta e recuperação"]
+    f4 --> parar
+    q4 -->|Sim| p5
     p5["Solicitar e confirmar exclusão sem histórico ou vínculos impeditivos"]
-    p4 --> p5
+    p5 --> q5{"Etapa produziu o resultado esperado?"}
+    q5 -->|Não ou não comprovado| f5["Informar falha sem anunciar exclusão concluída - a validar"]
+    f5 --> parar
+    q5 -->|Sim| p6
     p6["Conferir remoção pelo meio acordado"]
-    p5 --> p6
+    p6 --> q6{"Etapa produziu o resultado esperado?"}
+    q6 -->|Não ou não comprovado| f6["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
+    f6 --> parar
+    q6 -->|Sim| concluir
     classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
-    class pendente,decisao pendencia
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2,f3,f4,f5,f6 pendencia
 ```
+
+## Falhas, recusas e pendências por etapa
+
+As referências CAxx abaixo são rótulos dentro da Feature indicada, não IDs globais novos. Uma mensagem de falha não comprova que nenhuma gravação ocorreu; em perda de resposta, o estado final permanece a verificar.
+
+| Etapa ou variante | Resposta prevista ou pendência | Base |
+| --- | --- | --- |
+| 1. Criar inversor com dados obrigatórios | Informar falha sem confirmar inclusão - a validar. Não continuar etapas dependentes. | #24233 CA15, acréscimo a validar |
+| Inclusão recusada por entrada inválida | Não concluir inclusão; indicar campos obrigatórios faltantes ou alertar duplicidade. Recusa correta é resultado esperado da variante negativa. | #24403 e #24416 |
+| 2. Consultar o mesmo inversor | PENDÊNCIA: resposta à falha de consulta e recuperação. Não continuar etapas dependentes. | Consolidação de Consulta: tratamento detalhado e recuperação pendentes |
+| 3. Atualizar potência preservando a série | Apresentar motivo da falha sem confirmar edição - a validar. Não continuar etapas dependentes. | #24253 CA12, acréscimo a validar |
+| Atualização recusada por validação | Não confirmar a gravação inválida; não inferir preservação dos campos digitados ou política de nova tentativa. | #24462: obrigatoriedade e potência positiva |
+| 4. Consultar os valores atualizados | PENDÊNCIA: resposta à falha de consulta e recuperação. Não continuar etapas dependentes. | Consolidação de Consulta: tratamento detalhado e recuperação pendentes |
+| 5. Solicitar e confirmar exclusão sem histórico ou vínculos impeditivos | Informar falha sem anunciar exclusão concluída - a validar. Não continuar etapas dependentes. | #24254 CA09, acréscimo a validar |
+| 6. Conferir remoção pelo meio acordado | Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes. Não continuar etapas dependentes. | Resultados esperados do cenário; não há resposta automática definida para divergência constatada pelo avaliador |
 
 ## Especificação completa
 
