@@ -3,7 +3,7 @@ UCS009 — Exportar ficha individual de fabricantes
 
 Autoria / responsável acadêmico: Diogo Bruno Ferreira Martins de Aguiar
 Preparação assistida por IA; revisão humana e apresentação pendentes.
-Data: 05/11/2026. Revisão-base: 838d6ec05d26f6364e920e865d4abff59088dd34
+Revisão documental: 06/11/2026. Criação: 05/11/2026. Revisão-base: 5f3072939bb7ce5f90b64bf0faa5483bbb0d3260
 Natureza: cenário documental; não é teste automatizado; não executado.
 
 OBJETIVO
@@ -12,12 +12,16 @@ Conferir a identidade da ficha individual e a resposta quando o alvo está indis
 
 REQUISITOS RELACIONADOS
 Grupo: Cadastro de Marcas (Fabricantes).
-Feature existente sem número: Exportação de marcas.
-Critérios identificados pelos títulos originais: Arquivo individual; Registro individual indisponível; Entrega do arquivo; Ativos da marca.
+Feature #35912 — Exportação de fabricantes. Relacionadas: Consulta #24273 e US #25954.
+Tópicos da consolidação local (mapeamento revisado em docs/matriz-rastreabilidade.md): Arquivo individual; Registro individual indisponível; Entrega do arquivo; Ativos da marca.
+
+SITUAÇÃO DAS REGRAS E BLOQUEIOS
+FP1 a FP5: PDF individual, identidade, indisponibilidade e ativos associados constam dos novos CA02/CA04/CA07/CA08 da Feature #35912; aguardam validação dos stakeholders. FP2: confirmar indicação de download, que não está definida nesses nove CAs. Confirmar campos completos do PDF e autorização da modalidade; não presumir que identidade correta valida todo o conteúdo.
+Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
 
 ATOR
-Usuário com as permissões da modalidade. Nas alternativas de autorização,
-usuário com a permissão ausente, sem ampliar papéis ou poderes do cadastro.
+Pessoa usuária cuja autorização para a modalidade deverá ser definida pelos stakeholders.
+A matriz de perfis e permissões permanece pendente; não inferir autorização de exportação pelo acesso à consulta.
 
 PRÉ-CONDIÇÕES
 Ambiente futuro isolado e massa sintética já preparada. Nenhuma criação de cadastro
@@ -44,7 +48,7 @@ Todos os dados são fictícios; não constituem limites ou regras novas.
 2. Campos de PDF não definidos: marcar avaliação desses campos BLOQUEADA, mesmo com identidade correta.
 
 REGRAS DE NEGÓCIO
-Cada resultado acima deriva do critério nomeado. Formato, conjunto, identidade e
+Cada resultado proposto está sujeito à situação da regra indicada acima. Formato, conjunto, identidade e
 entrega são verificações distintas. A implementação não define o resultado esperado.
 Não definir mensagens literais, prazos, novas tentativas ou campos não especificados.
 
@@ -54,5 +58,6 @@ Nenhum arquivo foi gerado ou cenário executado. Em futura execução registrar
 versão, data, massa, esperado, observado e evidência, sem declarar sucesso antecipado.
 
 PENDÊNCIAS
+Consultar também SITUAÇÃO DAS REGRAS E BLOQUEIOS acima.
 Campos completos de PDF coletivo e individual, unidades e apresentação de dados ausentes precisam de decisão. O conteúdo CSV descrito não autoriza presumir igualdade dos demais formatos. Definir consulta vazia, fotografia temporal do inventário e recuperação após perda de resposta.
 """

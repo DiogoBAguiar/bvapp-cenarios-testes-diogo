@@ -14,3 +14,7 @@ Este é um roteiro para ensaio, não declaração de apresentação já realizad
 Antes da apresentação, Diogo deve ler os arquivos, confirmar o recorte com o grupo,
 verificar as referências e ensaiar com cronômetro. Não memorizar uma afirmação de
 funcionamento que esta atividade não demonstrou.
+
+## Pontos para a apresentação após a revisão
+
+Explicar os IDs #35875 e #35912 e a diferença entre ID global e rótulo de CA. Mostrar uma etapa bloqueada por autorização ainda indefinida e o conflito de formatos #24449 versus CA01 de #35875. Destacar que #24600 já prevê exclusão física de fabricante sem vínculos. Não apresentar publicação no backlog como aceite dos stakeholders, nem documentação como teste executado.

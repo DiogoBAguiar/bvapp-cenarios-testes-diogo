@@ -3,9 +3,9 @@ UCS001 — Manter inversores
 
 Autoria / responsável acadêmico: Diogo Bruno Ferreira Martins de Aguiar
 Preparação: assistência de IA; revisão pessoal e apresentação pelo responsável pendentes.
-Data: 05/11/2026
+Revisão documental: 06/11/2026. Criação: 05/11/2026
 Natureza: especificação documental, não teste automatizado nem evidência de execução.
-Revisão-base: 838d6ec05d26f6364e920e865d4abff59088dd34
+Revisão-base: 5f3072939bb7ce5f90b64bf0faa5483bbb0d3260
 Grupo de requisitos: Gestão de Inversores (a numeração da fonte é preservada).
 
 OBJETIVO
@@ -13,9 +13,12 @@ Descrever o ciclo completo de criar, consultar, atualizar e excluir inversores,
 sem dividir as quatro operações em quatro cenários contados separadamente.
 
 REQUISITOS RELACIONADOS
-Features 2.1.1.1 Inclusão, 2.1.1.2 Consulta,
-2.1.1.3 Atualização/Edição e 2.1.1.4 Exclusão, no grupo acima.
-CAs exercitados: CA-2.1.1.1.01, CA-2.1.1.1.02, CA-2.1.1.1.03, CA-2.1.1.1.04, CA-2.1.1.1.07, CA-2.1.1.1.10, CA-2.1.1.1.12, CA-2.1.1.1.17, CA-2.1.1.2.01, CA-2.1.1.2.08, CA-2.1.1.3.02, CA-2.1.1.3.04, CA-2.1.1.3.14, CA-2.1.1.4.01, CA-2.1.1.4.02, CA-2.1.1.4.03, CA-2.1.1.4.04, CA-2.1.1.4.06, CA-2.1.1.4.07.
+Features do OpenProject: #24233 (Inclusão), #24249 (Consulta), #24253 (Atualização) e #24254 (Exclusão).
+Referências locais da consolidação (não são IDs do OpenProject): CA-2.1.1.1.01, CA-2.1.1.1.02, CA-2.1.1.1.03, CA-2.1.1.1.04, CA-2.1.1.1.07, CA-2.1.1.1.10, CA-2.1.1.1.12, CA-2.1.1.1.17, CA-2.1.1.2.01, CA-2.1.1.2.08, CA-2.1.1.3.02, CA-2.1.1.3.04, CA-2.1.1.3.14, CA-2.1.1.4.01, CA-2.1.1.4.02, CA-2.1.1.4.03, CA-2.1.1.4.04, CA-2.1.1.4.06, CA-2.1.1.4.07.
+
+SITUAÇÃO DAS REGRAS E BLOQUEIOS
+Autorização: #24431 exige usuário logado e autorizado; #24439 restringe a consulta e #24473 exige Administrador/Gerente na exclusão. A matriz por operação e a separação entre listagem e detalhe permanecem pendentes. FP1: unidade/obrigatoriedade da garantia e condições dos vínculos precisam de validação. A1: bloqueio por painel vinculado é acréscimo levantado no sistema; sua aprovação e a precedência diante de histórico permanecem pendentes. #24416 define série única entre inversores; ampliar para outros tipos ou excluídos exige validação. FP2: campos adicionais do detalhe também dependem da validação dos acréscimos. Os demais resultados originais continuam rastreados, sem alegar homologação.
+Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
 
 ATOR
 Usuário autenticado com autorização de inclusão, listagem, visualização e edição; na exclusão, Administrador ou Gerente conforme a fonte. A equivalência dos perfis permanece pendente.
@@ -54,7 +57,7 @@ automática ou recuperação que não esteja definida. Os resultados dessas vari
 permanecem pendentes de especificação; não são cenários aprovados.
 
 REGRAS DE NEGÓCIO E ORÁCULO
-- Os resultados dos passos vêm dos CAs relacionados, não da resposta atual do sistema.
+- Os resultados originais vêm dos CAs relacionados; os acréscimos estão explicitamente sujeitos à validação indicada acima.
 - O cadastro em uma operação não concede autorização para as operações seguintes.
 - Cancelamento e bloqueio não devem ser descritos como conclusão bem-sucedida.
 - O comportamento específico de exclusão do grupo não é generalizado a outro grupo.

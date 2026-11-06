@@ -13,7 +13,7 @@ exclusão, variando os objetivos de manutenção normal, unicidade/histórico e
 validação/cancelamento. Os seis cenários de relatório distinguem conjunto coletivo,
 ficha individual e autorização/falha em cada grupo.
 
-A preparação usou a revisão dos requisitos identificada por `838d6ec05d26f6364e920e865d4abff59088dd34`.
+A preparação usou a revisão dos requisitos identificada por `5f3072939bb7ce5f90b64bf0faa5483bbb0d3260`.
 O hash fixa a versão consultada; os resumos funcionais e resultados necessários estão
 nos próprios cenários, sem exigir acesso a repositório privado. Não se publicam aqui
 os documentos de origem nem o código de implementação.
@@ -31,3 +31,9 @@ equivale a validação dos requisitos pelos stakeholders.
 
 A estrutura foi adaptada ao caráter documental desta entrega. Nenhum teste de TDD,
 red/green, execução de software ou aprovação funcional é alegado.
+
+## Revisão de 06/11/2026
+
+Foram confrontadas as consolidações de CA com os textos revisados para OpenProject e o registro de publicação da mesma versão. Os IDs de Feature são os registrados nessa revisão; não houve consulta ou alteração do OpenProject nesta atualização. Referências locais CA-2.1.x e rótulos CA01 não são IDs globais. Novos critérios cujo ID global não consta nos textos consultados são referidos pela Feature e pelo rótulo, sem inventar número.
+
+Regras originais identificadas no backlog, acréscimos levantados no sistema e conflitos são diferenciados nos cenários e nas pendências. A ausência de evidência de aceite impede tratar os acréscimos como decisões validadas. A exigência original de Excel em inversores permanece em conflito com PDF/CSV na nova Feature.

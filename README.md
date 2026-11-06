@@ -46,3 +46,7 @@ declaradas realizadas. A atribuição de responsabilidade acadêmica não compro
 
 O pacote não contém código do produto, arquivos privados de origem, dados reais de
 usuários ou credenciais. A leitura dos cenários é autossuficiente para a avaliação.
+
+## Revisão dos requisitos — 06/11/2026
+
+Os dez cenários foram revisados contra a base `5f3072939bb7ce5f90b64bf0faa5483bbb0d3260`. Exportações agora referenciam as Features #35875 (inversores) e #35912 (fabricantes). Veja a [matriz com IDs](docs/matriz-rastreabilidade.md) e as [pendências por cenário](docs/pendencias.md). Etapas com regra pendente ficam bloqueadas para aceite; o conflito Excel/CSV não foi resolvido por suposição. Este pacote contém documentação, sem execução de testes ou entrega no Classroom.

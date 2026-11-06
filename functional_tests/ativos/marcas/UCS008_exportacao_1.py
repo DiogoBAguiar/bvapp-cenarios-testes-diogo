@@ -3,7 +3,7 @@ UCS008 — Exportar consulta filtrada de fabricantes em todos os formatos
 
 Autoria / responsável acadêmico: Diogo Bruno Ferreira Martins de Aguiar
 Preparação assistida por IA; revisão humana e apresentação pendentes.
-Data: 05/11/2026. Revisão-base: 838d6ec05d26f6364e920e865d4abff59088dd34
+Revisão documental: 06/11/2026. Criação: 05/11/2026. Revisão-base: 5f3072939bb7ce5f90b64bf0faa5483bbb0d3260
 Natureza: cenário documental; não é teste automatizado; não executado.
 
 OBJETIVO
@@ -12,12 +12,16 @@ Conferir formatos obrigatórios, filtros, abrangência além da página e ordem 
 
 REQUISITOS RELACIONADOS
 Grupo: Cadastro de Marcas (Fabricantes).
-Feature existente sem número: Exportação de marcas.
-Critérios identificados pelos títulos originais: Formatos de exportação; Resultado completo da consulta; Filtros da exportação; Dados do arquivo; Entrega do arquivo; Ordenação.
+Feature #35912 — Exportação de fabricantes. Relacionadas: Consulta #24273 e US #25954.
+Tópicos da consolidação local (mapeamento revisado em docs/matriz-rastreabilidade.md): Formatos de exportação; Resultado completo da consulta; Filtros da exportação; Dados do arquivo; Entrega do arquivo; Ordenação.
+
+SITUAÇÃO DAS REGRAS E BLOQUEIOS
+FP1 a FP6: PDF/CSV, abrangência, filtro e ordenação constam da nova Feature #35912 e aguardam validação dos acréscimos. As colunas CSV do levantamento não estão especificadas nos nove CAs dessa Feature: confirmar composição, sem inferir equivalência com a tabela ou com o PDF. Autorizações por modalidade, conjunto vazio e momento dos dados continuam pendentes.
+Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
 
 ATOR
-Usuário com as permissões da modalidade. Nas alternativas de autorização,
-usuário com a permissão ausente, sem ampliar papéis ou poderes do cadastro.
+Pessoa usuária cuja autorização para a modalidade deverá ser definida pelos stakeholders.
+A matriz de perfis e permissões permanece pendente; não inferir autorização de exportação pelo acesso à consulta.
 
 PRÉ-CONDIÇÕES
 Ambiente futuro isolado e massa sintética já preparada. Nenhuma criação de cadastro
@@ -50,7 +54,7 @@ Todos os dados são fictícios; não constituem limites ou regras novas.
 2. Consulta vazia: comportamento pendente; não presumir arquivo vazio ou ausência de download.
 
 REGRAS DE NEGÓCIO
-Cada resultado acima deriva do critério nomeado. Formato, conjunto, identidade e
+Cada resultado proposto está sujeito à situação da regra indicada acima. Formato, conjunto, identidade e
 entrega são verificações distintas. A implementação não define o resultado esperado.
 Não definir mensagens literais, prazos, novas tentativas ou campos não especificados.
 
@@ -60,5 +64,6 @@ Nenhum arquivo foi gerado ou cenário executado. Em futura execução registrar
 versão, data, massa, esperado, observado e evidência, sem declarar sucesso antecipado.
 
 PENDÊNCIAS
+Consultar também SITUAÇÃO DAS REGRAS E BLOQUEIOS acima.
 Campos completos de PDF coletivo e individual, unidades e apresentação de dados ausentes precisam de decisão. O conteúdo CSV descrito não autoriza presumir igualdade dos demais formatos. Definir consulta vazia, fotografia temporal do inventário e recuperação após perda de resposta.
 """
