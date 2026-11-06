@@ -20,27 +20,27 @@ Aplicam-se as pendências de UCS002. FP2 e FP3: detalhe de contatos, validação
 
 ## UCS005
 
-FP2 e A1: CONFLITO — CA #24449, em Consulta #24249, exige PDF e Excel; CA01 da nova Feature #35875 descreve PDF e CSV. Confirmar se Excel permanece exigido; CSV não é Excel e a nova descrição não comprova revogação do requisito original. FP3 a FP6: abrangência de todas as páginas, colunas CSV, entrega e ordenação constam dos acréscimos da exportação e aguardam validação. Filtros adicionais ao CA #24447 também precisam de validação. A autorização específica para exportar continua indefinida.
+FP2 e A1: CONFLITO — CA #24449, em Consulta #24249, exige PDF e Excel; CA01 da nova Feature #35875 descreve PDF e CSV. Confirmar se Excel permanece exigido; CSV não é Excel e a nova descrição não comprova revogação do requisito original. FP3 a FP6: abrangência de todas as páginas, colunas CSV, entrega e ordenação constam dos acréscimos da exportação e aguardam validação. Filtros adicionais ao CA #24447 também precisam de validação.
 
 ## UCS006
 
-FP1 a FP5: PDF individual, identidade do registro, indisponibilidade e entrega constam dos acréscimos da Feature #35875, sem comprovação de validação dos stakeholders. Confirmar autorização da modalidade e campos completos do PDF. O conflito PDF/Excel versus PDF/CSV refere-se à exportação coletiva (UCS005); não resolve o contrato da ficha individual.
+FP1 a FP5: PDF individual, identidade do registro, indisponibilidade e entrega constam dos acréscimos da Feature #35875, sem comprovação de validação dos stakeholders. Confirmar campos completos do PDF. O conflito PDF/Excel versus PDF/CSV refere-se à exportação coletiva (UCS005); não resolve o contrato da ficha individual.
 
 ## UCS007
 
-FP1 e A1: BLOQUEADOS até aprovação da matriz de autorização por modalidade. Ausência de consulta ou visualização não define sozinha a recusa da exportação. FP2 a FP4: andamento e falha constam dos novos CA05/CA06 da Feature #35875; expectativas propostas, pendentes de validação. FP5: retomada e tentativas continuam sem definição.
+FP2 e FP3: a recusa sem autorização está definida no critério Autorização do CA consolidado da Feature e no cenário "Usuário sem autorização" da US de origem #24457 (exportação recusada e nenhum relatório entregue); na ficha individual, também no CA #24439. Pendente apenas registrar esse critério entre os CA01–CA07 publicados da Feature #35875, e a forma de apresentar a recusa. FP1, FP4 e FP5: andamento e falha constam dos novos CA05/CA06 da Feature #35875; expectativas propostas, pendentes de validação. FP6: retomada e tentativas continuam sem definição.
 
 ## UCS008
 
-FP1 a FP6: PDF/CSV, abrangência, filtro e ordenação constam da nova Feature #35912 e aguardam validação dos acréscimos. As colunas CSV do levantamento não estão especificadas nos nove CAs dessa Feature: confirmar composição, sem inferir equivalência com a tabela ou com o PDF. Autorizações por modalidade, conjunto vazio e momento dos dados continuam pendentes.
+FP1 a FP6: PDF/CSV, abrangência, filtro e ordenação constam da nova Feature #35912 e aguardam validação dos acréscimos. As colunas CSV do levantamento não estão especificadas nos nove CAs dessa Feature: confirmar composição, sem inferir equivalência com a tabela ou com o PDF. Conjunto vazio e momento dos dados continuam pendentes.
 
 ## UCS009
 
-FP1 a FP5: PDF individual, identidade, indisponibilidade e ativos associados constam dos novos CA02/CA04/CA07/CA08 da Feature #35912; aguardam validação dos stakeholders. FP2: confirmar indicação de download, que não está definida nesses nove CAs. Confirmar campos completos do PDF e autorização da modalidade; não presumir que identidade correta valida todo o conteúdo.
+FP1 a FP5: PDF individual, identidade, indisponibilidade e ativos associados constam dos novos CA02/CA04/CA07/CA08 da Feature #35912; aguardam validação dos stakeholders. FP2: confirmar indicação de download, que não está definida nesses nove CAs. Confirmar campos completos do PDF; não presumir que identidade correta valida todo o conteúdo.
 
 ## UCS010
 
-FP1 e A1: BLOQUEADOS até aprovação da matriz de autorização por modalidade. FP2 a FP4: andamento e falha constam dos novos CA03/CA01 da Feature #35912; expectativas propostas, pendentes de validação. FP5: recuperação e tentativas continuam indefinidas.
+FP2 e FP3: a recusa sem autorização está definida no critério Autorização do CA consolidado da Feature e no cenário "Usuário sem autorização" da US de origem #25954 (exportação recusada e nenhum relatório entregue). Pendente apenas registrar esse critério entre os CA01–CA09 publicados da Feature #35912, e a forma de apresentar a recusa. FP1, FP4 e FP5: andamento e falha constam dos novos CA03/CA01 da Feature #35912; expectativas propostas, pendentes de validação. FP6: recuperação e tentativas continuam indefinidas.
 
 ## UCS011
 

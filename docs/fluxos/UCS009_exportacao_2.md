@@ -37,7 +37,7 @@ flowchart TD
     q5 -->|Não ou não comprovado| f5["Se não informar indisponibilidade ou entregar outro registro: divergência"]
     f5 --> parar
     q5 -->|Sim| p6
-    p6["Manter campos e autorização pendentes bloqueados"]
+    p6["Manter campos pendentes bloqueados"]
     p6 --> q6{"Etapa produziu o resultado esperado?"}
     q6 -->|Não ou não comprovado| f6["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
     f6 --> parar
@@ -59,7 +59,7 @@ As referências CAxx abaixo são rótulos dentro da Feature indicada, não IDs g
 | 3. Conferir identidade do fabricante | Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes. Não continuar etapas dependentes. | Resultados esperados do cenário; não há resposta automática definida para divergência constatada pelo avaliador |
 | 4. Conferir ativos associados não excluídos por série, tipo e situação | Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes. Não continuar etapas dependentes. | Resultados esperados do cenário; não há resposta automática definida para divergência constatada pelo avaliador |
 | 5. Na variante indisponível, conferir resposta prevista | Se não informar indisponibilidade ou entregar outro registro: divergência. Não continuar etapas dependentes. | #35912 CA02, a validar |
-| 6. Manter campos e autorização pendentes bloqueados | PENDÊNCIA: não há decisão ou condição suficiente para esta etapa. Não continuar etapas dependentes. | Pendências do próprio cenário; não é falha comprovada do sistema |
+| 6. Manter campos pendentes bloqueados | PENDÊNCIA: não há decisão ou condição suficiente para esta etapa. Não continuar etapas dependentes. | Pendências do próprio cenário; não é falha comprovada do sistema |
 
 ## Especificação completa
 
@@ -84,14 +84,14 @@ Tópicos da consolidação local (mapeamento revisado em docs/matriz-rastreabili
 
 ### SITUAÇÃO DAS REGRAS E BLOQUEIOS
 
-FP1 a FP5: PDF individual, identidade, indisponibilidade e ativos associados constam dos novos CA02/CA04/CA07/CA08 da Feature #35912; aguardam validação dos stakeholders. FP2: confirmar indicação de download, que não está definida nesses nove CAs. Confirmar campos completos do PDF e autorização da modalidade; não presumir que identidade correta valida todo o conteúdo.
+FP1 a FP5: PDF individual, identidade, indisponibilidade e ativos associados constam dos novos CA02/CA04/CA07/CA08 da Feature #35912; aguardam validação dos stakeholders. FP2: confirmar indicação de download, que não está definida nesses nove CAs. Confirmar campos completos do PDF; não presumir que identidade correta valida todo o conteúdo.
 Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
 
 
 ### ATOR
 
-Pessoa usuária cuja autorização para a modalidade deverá ser definida pelos stakeholders.
-A matriz de perfis e permissões permanece pendente; não inferir autorização de exportação pelo acesso à consulta.
+Pessoa usuária com autorização para visualizar o registro (exportação individual), conforme o critério Autorização da Feature de exportação.
+A recusa sem essa autorização é verificada no UCS010.
 
 
 ### PRÉ-CONDIÇÕES

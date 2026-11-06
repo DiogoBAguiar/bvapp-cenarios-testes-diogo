@@ -16,12 +16,12 @@ Feature #35912 — Exportação de fabricantes. Relacionadas: Consulta #24273 e 
 Tópicos da consolidação local (mapeamento revisado em docs/matriz-rastreabilidade.md): Arquivo individual; Registro individual indisponível; Entrega do arquivo; Ativos da marca.
 
 SITUAÇÃO DAS REGRAS E BLOQUEIOS
-FP1 a FP5: PDF individual, identidade, indisponibilidade e ativos associados constam dos novos CA02/CA04/CA07/CA08 da Feature #35912; aguardam validação dos stakeholders. FP2: confirmar indicação de download, que não está definida nesses nove CAs. Confirmar campos completos do PDF e autorização da modalidade; não presumir que identidade correta valida todo o conteúdo.
+FP1 a FP5: PDF individual, identidade, indisponibilidade e ativos associados constam dos novos CA02/CA04/CA07/CA08 da Feature #35912; aguardam validação dos stakeholders. FP2: confirmar indicação de download, que não está definida nesses nove CAs. Confirmar campos completos do PDF; não presumir que identidade correta valida todo o conteúdo.
 Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
 
 ATOR
-Pessoa usuária cuja autorização para a modalidade deverá ser definida pelos stakeholders.
-A matriz de perfis e permissões permanece pendente; não inferir autorização de exportação pelo acesso à consulta.
+Pessoa usuária com autorização para visualizar o registro (exportação individual), conforme o critério Autorização da Feature de exportação.
+A recusa sem essa autorização é verificada no UCS010.
 
 PRÉ-CONDIÇÕES
 Ambiente futuro isolado e massa sintética já preparada. Nenhuma criação de cadastro

@@ -16,12 +16,12 @@ Feature #35875 — Exportação de inversores. Relacionadas: Consulta #24249 e U
 Tópicos da consolidação local (mapeamento revisado em docs/matriz-rastreabilidade.md): Formatos de exportação; Resultado completo da consulta; Filtros da exportação; Dados do arquivo; Entrega do arquivo; Ordenação.
 
 SITUAÇÃO DAS REGRAS E BLOQUEIOS
-FP2 e A1: CONFLITO — CA #24449, em Consulta #24249, exige PDF e Excel; CA01 da nova Feature #35875 descreve PDF e CSV. Confirmar se Excel permanece exigido; CSV não é Excel e a nova descrição não comprova revogação do requisito original. FP3 a FP6: abrangência de todas as páginas, colunas CSV, entrega e ordenação constam dos acréscimos da exportação e aguardam validação. Filtros adicionais ao CA #24447 também precisam de validação. A autorização específica para exportar continua indefinida.
+FP2 e A1: CONFLITO — CA #24449, em Consulta #24249, exige PDF e Excel; CA01 da nova Feature #35875 descreve PDF e CSV. Confirmar se Excel permanece exigido; CSV não é Excel e a nova descrição não comprova revogação do requisito original. FP3 a FP6: abrangência de todas as páginas, colunas CSV, entrega e ordenação constam dos acréscimos da exportação e aguardam validação. Filtros adicionais ao CA #24447 também precisam de validação.
 Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
 
 ATOR
-Pessoa usuária cuja autorização para a modalidade deverá ser definida pelos stakeholders.
-A matriz de perfis e permissões permanece pendente; não inferir autorização de exportação pelo acesso à consulta.
+Pessoa usuária com autorização para consultar a listagem (exportação coletiva), conforme o critério Autorização da Feature de exportação.
+A recusa sem essa autorização é verificada no UCS007.
 
 PRÉ-CONDIÇÕES
 Ambiente futuro isolado e massa sintética já preparada. Nenhuma criação de cadastro

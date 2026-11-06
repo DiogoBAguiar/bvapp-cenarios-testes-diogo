@@ -360,7 +360,7 @@ flowchart TD
     q4 -->|Não ou não comprovado| f4["Se não informar indisponibilidade ou entregar outro registro: divergência"]
     f4 --> parar
     q4 -->|Sim| p5
-    p5["Manter campos e autorização pendentes bloqueados"]
+    p5["Manter campos pendentes bloqueados"]
     p5 --> q5{"Etapa produziu o resultado esperado?"}
     q5 -->|Não ou não comprovado| f5["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
     f5 --> parar
@@ -377,24 +377,24 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    inicio["Preparar massa fictícia e perfis A, B e C; observar pendências de cada etapa"]
     parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
     concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
     inicio --> p1
-    p1["Definir matriz de autorização por modalidade"]
+    p1["Perfil A solicita exportação coletiva e ficha; conferir andamento"]
     p1 --> q1{"Etapa produziu o resultado esperado?"}
-    q1 -->|Não ou não comprovado| f1["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    q1 -->|Não ou não comprovado| f1["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
     f1 --> parar
     q1 -->|Sim| p2
-    p2["Após validação, solicitar exportação com perfil autorizado"]
-    p2 --> q2{"Etapa produziu o resultado esperado?"}
-    q2 -->|Não ou não comprovado| f2["Informar falha; não entregar erro como relatório - a validar"]
-    f2 --> parar
+    p2["Perfil B sem consulta solicita exportação coletiva, também por acesso direto"]
+    p2 --> q2{"Recusada e nenhum relatório entregue?"}
+    q2 -->|Não| d2["DEFEITO: exportação coletiva entregue sem autorização de consulta"]
+    d2 --> parar
     q2 -->|Sim| p3
-    p3["Conferir indicação de preparação proposta"]
-    p3 --> q3{"Etapa produziu o resultado esperado?"}
-    q3 -->|Não ou não comprovado| f3["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
-    f3 --> parar
+    p3["Perfil C sem visualização solicita ficha individual, também por acesso direto"]
+    p3 --> q3{"Recusada e nenhuma ficha entregue?"}
+    q3 -->|Não| d3["DEFEITO: ficha entregue sem autorização de visualização"]
+    d3 --> parar
     q3 -->|Sim| p4
     p4["Avaliar falha controlada na exportação coletiva"]
     p4 --> q4{"Etapa produziu o resultado esperado?"}
@@ -412,9 +412,11 @@ flowchart TD
     f6 --> parar
     q6 -->|Sim| concluir
     classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
+    classDef defeito fill:#ffebe9,stroke:#cf222e,color:#24292f
     classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
     class parar,concluir avaliacao
-    class f1,f2,f3,f4,f5,f6 pendencia
+    class f1,f4,f5,f6 pendencia
+    class d2,d3 defeito
 ```
 
 ### UCS008 — Exportar consulta filtrada de fabricantes em todos os formatos
@@ -498,7 +500,7 @@ flowchart TD
     q5 -->|Não ou não comprovado| f5["Se não informar indisponibilidade ou entregar outro registro: divergência"]
     f5 --> parar
     q5 -->|Sim| p6
-    p6["Manter campos e autorização pendentes bloqueados"]
+    p6["Manter campos pendentes bloqueados"]
     p6 --> q6{"Etapa produziu o resultado esperado?"}
     q6 -->|Não ou não comprovado| f6["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
     f6 --> parar
@@ -515,24 +517,24 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia; observar pendências de cada etapa"]
+    inicio["Preparar massa fictícia e perfis A, B e C; observar pendências de cada etapa"]
     parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
     concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
     inicio --> p1
-    p1["Definir matriz de autorização por modalidade"]
+    p1["Perfil A solicita exportação coletiva e ficha; conferir andamento"]
     p1 --> q1{"Etapa produziu o resultado esperado?"}
-    q1 -->|Não ou não comprovado| f1["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
+    q1 -->|Não ou não comprovado| f1["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
     f1 --> parar
     q1 -->|Sim| p2
-    p2["Após validação, solicitar exportação com perfil autorizado"]
-    p2 --> q2{"Etapa produziu o resultado esperado?"}
-    q2 -->|Não ou não comprovado| f2["Informar falha; não entregar erro como relatório - a validar"]
-    f2 --> parar
+    p2["Perfil B sem consulta solicita exportação coletiva, também por acesso direto"]
+    p2 --> q2{"Recusada e nenhum relatório entregue?"}
+    q2 -->|Não| d2["DEFEITO: exportação coletiva entregue sem autorização de consulta"]
+    d2 --> parar
     q2 -->|Sim| p3
-    p3["Conferir indicação de preparação proposta"]
-    p3 --> q3{"Etapa produziu o resultado esperado?"}
-    q3 -->|Não ou não comprovado| f3["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
-    f3 --> parar
+    p3["Perfil C sem visualização solicita ficha individual, também por acesso direto"]
+    p3 --> q3{"Recusada e nenhuma ficha entregue?"}
+    q3 -->|Não| d3["DEFEITO: ficha entregue sem autorização de visualização"]
+    d3 --> parar
     q3 -->|Sim| p4
     p4["Avaliar falha controlada na exportação coletiva"]
     p4 --> q4{"Etapa produziu o resultado esperado?"}
@@ -550,9 +552,11 @@ flowchart TD
     f6 --> parar
     q6 -->|Sim| concluir
     classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
+    classDef defeito fill:#ffebe9,stroke:#cf222e,color:#24292f
     classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
     class parar,concluir avaliacao
-    class f1,f2,f3,f4,f5,f6 pendencia
+    class f1,f4,f5,f6 pendencia
+    class d2,d3 defeito
 ```
 
 ### UCS011 — Recusar edição e exclusão por acesso direto sem permissão

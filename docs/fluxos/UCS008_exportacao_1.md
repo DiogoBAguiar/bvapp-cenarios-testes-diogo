@@ -84,14 +84,14 @@ Tópicos da consolidação local (mapeamento revisado em docs/matriz-rastreabili
 
 ### SITUAÇÃO DAS REGRAS E BLOQUEIOS
 
-FP1 a FP6: PDF/CSV, abrangência, filtro e ordenação constam da nova Feature #35912 e aguardam validação dos acréscimos. As colunas CSV do levantamento não estão especificadas nos nove CAs dessa Feature: confirmar composição, sem inferir equivalência com a tabela ou com o PDF. Autorizações por modalidade, conjunto vazio e momento dos dados continuam pendentes.
+FP1 a FP6: PDF/CSV, abrangência, filtro e ordenação constam da nova Feature #35912 e aguardam validação dos acréscimos. As colunas CSV do levantamento não estão especificadas nos nove CAs dessa Feature: confirmar composição, sem inferir equivalência com a tabela ou com o PDF. Conjunto vazio e momento dos dados continuam pendentes.
 Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
 
 
 ### ATOR
 
-Pessoa usuária cuja autorização para a modalidade deverá ser definida pelos stakeholders.
-A matriz de perfis e permissões permanece pendente; não inferir autorização de exportação pelo acesso à consulta.
+Pessoa usuária com autorização para consultar a listagem (exportação coletiva), conforme o critério Autorização da Feature de exportação.
+A recusa sem essa autorização é verificada no UCS010.
 
 
 ### PRÉ-CONDIÇÕES

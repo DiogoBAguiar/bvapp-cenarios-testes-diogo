@@ -32,7 +32,7 @@ flowchart TD
     q4 -->|Não ou não comprovado| f4["Se não informar indisponibilidade ou entregar outro registro: divergência"]
     f4 --> parar
     q4 -->|Sim| p5
-    p5["Manter campos e autorização pendentes bloqueados"]
+    p5["Manter campos pendentes bloqueados"]
     p5 --> q5{"Etapa produziu o resultado esperado?"}
     q5 -->|Não ou não comprovado| f5["PENDÊNCIA: não há decisão ou condição suficiente para esta etapa"]
     f5 --> parar
@@ -53,7 +53,7 @@ As referências CAxx abaixo são rótulos dentro da Feature indicada, não IDs g
 | 2. Solicitar ficha PDF individual | Informar falha; não entregar erro como relatório - a validar. Não continuar etapas dependentes. | #35875 CA06, acréscimo a validar |
 | 3. Conferir entrega e identidade do alvo | Informar falha; não entregar erro como relatório - a validar. Não continuar etapas dependentes. | #35875 CA06, acréscimo a validar |
 | 4. Na variante indisponível, conferir resposta prevista | Se não informar indisponibilidade ou entregar outro registro: divergência. Não continuar etapas dependentes. | #35875 CA04, a validar |
-| 5. Manter campos e autorização pendentes bloqueados | PENDÊNCIA: não há decisão ou condição suficiente para esta etapa. Não continuar etapas dependentes. | Pendências do próprio cenário; não é falha comprovada do sistema |
+| 5. Manter campos pendentes bloqueados | PENDÊNCIA: não há decisão ou condição suficiente para esta etapa. Não continuar etapas dependentes. | Pendências do próprio cenário; não é falha comprovada do sistema |
 
 ## Especificação completa
 
@@ -78,14 +78,14 @@ Tópicos da consolidação local (mapeamento revisado em docs/matriz-rastreabili
 
 ### SITUAÇÃO DAS REGRAS E BLOQUEIOS
 
-FP1 a FP5: PDF individual, identidade do registro, indisponibilidade e entrega constam dos acréscimos da Feature #35875, sem comprovação de validação dos stakeholders. Confirmar autorização da modalidade e campos completos do PDF. O conflito PDF/Excel versus PDF/CSV refere-se à exportação coletiva (UCS005); não resolve o contrato da ficha individual.
+FP1 a FP5: PDF individual, identidade do registro, indisponibilidade e entrega constam dos acréscimos da Feature #35875, sem comprovação de validação dos stakeholders. Confirmar campos completos do PDF. O conflito PDF/Excel versus PDF/CSV refere-se à exportação coletiva (UCS005); não resolve o contrato da ficha individual.
 Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
 
 
 ### ATOR
 
-Pessoa usuária cuja autorização para a modalidade deverá ser definida pelos stakeholders.
-A matriz de perfis e permissões permanece pendente; não inferir autorização de exportação pelo acesso à consulta.
+Pessoa usuária com autorização para visualizar o registro (exportação individual), conforme o critério Autorização da Feature de exportação.
+A recusa sem essa autorização é verificada no UCS007.
 
 
 ### PRÉ-CONDIÇÕES
