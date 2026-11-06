@@ -16,6 +16,7 @@ Cobertura selecionada, sem alegação de cobertura total ou execução. Base rev
 | UCS008 | #35912 Exportação de fabricantes; #24273 Consulta | #24586 paginação/ordem, #24587 filtros; US relacionada #25954 | #35912 CA04–CA06/CA09: formatos, conjunto, busca e ordem. Colunas CSV e aviso de download não constam desses nove CAs; confirmar a especificação. |
 | UCS009 | #35912 Exportação de fabricantes | US relacionada #25954 | CA02/CA04/CA07/CA08: indisponibilidade, PDF, identidade e ativos associados. Validar acréscimos, campos e aviso de download. |
 | UCS010 | #35912 Exportação de fabricantes | US relacionada #25954 | CA01/CA03: falha/andamento. Matriz de autorização não definida; FP1 bloqueado. |
+| UCS011 | #24249 Consulta, #24253 Atualização e #24254 Exclusão de inversores; #24275 Atualização e #24278 Exclusão de Fabricante | Inversores: #24439 listar não autoriza editar/excluir, #24473 exclusão por Administrador/Gerente; US #29059 alteração de status. Fabricantes: US #24594 edição, #24595 exclusão por Administradores | Sem acréscimos: recusas vêm dos critérios originais. Forma da recusa e equivalência Administrador/Gerente pendentes. |
 
 A existência de ID não equivale a aceite. As condições de bloqueio estão em cada cenário e em [pendências](pendencias.md).
 
@@ -35,3 +36,4 @@ A tabela abaixo permite localizar as consolidações que deram origem aos cenár
 | [UCS008](../functional_tests/ativos/marcas/UCS008_exportacao_1.py) | Cadastro de Marcas (Fabricantes) | Formatos de exportação; Resultado completo da consulta; Filtros da exportação; Dados do arquivo; Entrega do arquivo; Ordenação | Exportação |
 | [UCS009](../functional_tests/ativos/marcas/UCS009_exportacao_2.py) | Cadastro de Marcas (Fabricantes) | Arquivo individual; Registro individual indisponível; Entrega do arquivo; Ativos da marca | Exportação |
 | [UCS010](../functional_tests/ativos/marcas/UCS010_exportacao_3.py) | Cadastro de Marcas (Fabricantes) | Autorização; Falha na obtenção do arquivo; Exportação em andamento | Exportação |
+| [UCS011](../functional_tests/ativos/UCS011_acesso_direto_sem_permissao.py) | Gestão de Inversores e Cadastro de Marcas (Fabricantes) | CA-2.1.1.2.01; CA-2.1.1.3.01; CA-2.1.1.4.01; CA-2.1.1.4.06; CA-2.1.4.1.3.01; CA-2.1.4.1.4.01 | Controle de acesso |

@@ -5,8 +5,8 @@ da disciplina Verificação, Validação e Teste de Software.
 
 **Responsável acadêmico:** Diogo Bruno Ferreira Martins de Aguiar. **Data:** 05/11/2026.
 
-São **10 cenários documentais**: quatro CRUD completos, com objetivos distintos,
-e seis cenários de exportação. O recorte individual confirmado é **inversores e
+São **11 cenários documentais**: quatro CRUD completos, com objetivos distintos,
+seis cenários de exportação e um cenário negativo de controle de acesso. O recorte individual confirmado é **inversores e
 fabricantes (marcas)**. Cada arquivo contém
 identificador, objetivo, requisitos, ator, pré-condições, dados, fluxo principal,
 alternativas, regras, resultados esperados e pendências.
@@ -33,6 +33,7 @@ Veja os [fluxos em Markdown](docs/fluxos.md), com a descrição completa de cada
 | UCS008 | [Exportar consulta filtrada de fabricantes em todos os formatos](functional_tests/ativos/marcas/UCS008_exportacao_1.py) | Exportação |
 | UCS009 | [Exportar ficha individual de fabricantes](functional_tests/ativos/marcas/UCS009_exportacao_2.py) | Exportação |
 | UCS010 | [Tratar autorização e falha de exportação de fabricantes](functional_tests/ativos/marcas/UCS010_exportacao_3.py) | Exportação |
+| UCS011 | [Recusar edição e exclusão por acesso direto sem permissão](functional_tests/ativos/UCS011_acesso_direto_sem_permissao.py) | Controle de acesso |
 
 ## Como revisar
 
@@ -51,6 +52,8 @@ usuários ou credenciais. A leitura dos cenários é autossuficiente para a aval
 ## Revisão dos requisitos — 06/11/2026
 
 Os dez cenários foram revisados contra a base `5f3072939bb7ce5f90b64bf0faa5483bbb0d3260`. Exportações agora referenciam as Features #35875 (inversores) e #35912 (fabricantes). Veja a [matriz com IDs](docs/matriz-rastreabilidade.md) e as [pendências por cenário](docs/pendencias.md). Etapas com regra pendente ficam bloqueadas para aceite; o conflito Excel/CSV não foi resolvido por suposição. Este pacote contém documentação, sem execução de testes ou entrega no Classroom.
+
+O UCS011 foi acrescentado na mesma data e base. Ele verifica, para inversores e fabricantes, que perfis sem a autorização correspondente são recusados ao solicitar edição ou exclusão diretamente, sem usar os controles da tela. As recusas esperadas vêm dos critérios de autorização já existentes (CA-2.1.1.2.01, CA-2.1.1.3.01, CA-2.1.1.4.01, CA-2.1.4.1.3.01 e CA-2.1.4.1.4.01); nenhuma regra nova foi criada.
 
 ## Fluxos visuais
 
@@ -550,4 +553,57 @@ flowchart TD
     classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
     class parar,concluir avaliacao
     class f1,f2,f3,f4,f5,f6 pendencia
+```
+
+### UCS011 — Recusar edição e exclusão por acesso direto sem permissão
+
+[Ver descrição completa, respostas às falhas e pendências](docs/fluxos/UCS011_acesso_direto_sem_permissao.md)
+
+```mermaid
+flowchart TD
+    inicio["Preparar massa fictícia com o Perfil A e registrar valores iniciais"]
+    parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
+    concluir["Registrar resultado do percurso; recusas conferidas pelo dado inalterado"]
+    inicio --> p1
+    p1["Anotar endereço e solicitação de edição e exclusão usados pela interface"]
+    p1 --> q1{"Etapa produziu o resultado esperado?"}
+    q1 -->|Não ou não comprovado| f1["Sem meio de reproduzir a solicitação: etapas 3 a 6 bloqueadas nesta execução"]
+    f1 --> parar
+    q1 -->|Sim| p2
+    p2["Perfil L abre consulta e detalhe dos dois registros"]
+    p2 --> q2{"Etapa produziu o resultado esperado?"}
+    q2 -->|Não ou não comprovado| f2["Perfil L sem consulta: rever preparação dos perfis antes de avaliar recusas"]
+    f2 --> parar
+    q2 -->|Sim| p3
+    p3["Perfil L grava edição do inversor por acesso direto"]
+    p3 --> q3{"Recusada e potência inalterada?"}
+    q3 -->|Não| d3["DEFEITO: gravação aceita sem autorização de edição"]
+    d3 --> parar
+    q3 -->|Sim| p4
+    p4["Perfil L envia exclusão do inversor por acesso direto"]
+    p4 --> q4{"Recusada e inversor preservado?"}
+    q4 -->|Não| d4["DEFEITO: exclusão aceita ou anunciada fora do perfil Administrador/Gerente"]
+    d4 --> parar
+    q4 -->|Sim| p5
+    p5["Perfil L grava edição da marca por acesso direto"]
+    p5 --> q5{"Recusada e nome inalterado?"}
+    q5 -->|Não| d5["DEFEITO: gravação aceita sem autorização de edição"]
+    d5 --> parar
+    q5 -->|Sim| p6
+    p6["Perfil E envia exclusão da marca por acesso direto"]
+    p6 --> q6{"Recusada e marca Ativa?"}
+    q6 -->|Não| d6["DEFEITO: permissão de edição tratada como permissão de exclusão"]
+    d6 --> parar
+    q6 -->|Sim| p7
+    p7["Perfil A confere os dois registros contra os valores iniciais"]
+    p7 --> q7{"Valores iguais aos iniciais?"}
+    q7 -->|Não| d7["DEFEITO: alteração gravada apesar da recusa; registrar evidência"]
+    d7 --> parar
+    q7 -->|Sim| concluir
+    classDef pendencia fill:#fff3cd,stroke:#9a6700,color:#24292f
+    classDef defeito fill:#ffebe9,stroke:#cf222e,color:#24292f
+    classDef avaliacao fill:#e7f1ff,stroke:#0969da,color:#24292f
+    class parar,concluir avaliacao
+    class f1,f2 pendencia
+    class d3,d4,d5,d6,d7 defeito
 ```

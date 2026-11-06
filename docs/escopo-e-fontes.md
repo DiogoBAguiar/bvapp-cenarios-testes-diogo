@@ -3,15 +3,17 @@
 ## Autoridade e limites
 
 O enunciado pede pelo menos dez cenários por estudante e reúne criar, consultar,
-atualizar e excluir no mesmo cenário quando houver CRUD. Este pacote contém 10.
-Os IDs UCS001 a UCS010 identificam somente cenários deste mini projeto: não são
+atualizar e excluir no mesmo cenário quando houver CRUD. Este pacote contém 11.
+Os IDs UCS001 a UCS011 identificam somente cenários deste mini projeto: não são
 novas Features, EPICs ou renumeração do BVAPP.
 
 O recorte individual confirmado é Gestão de Inversores e Cadastro de Marcas
 (Fabricantes). Os quatro cenários CRUD reúnem inclusão, consulta, atualização e
 exclusão, variando os objetivos de manutenção normal, unicidade/histórico e
 validação/cancelamento. Os seis cenários de relatório distinguem conjunto coletivo,
-ficha individual e autorização/falha em cada grupo.
+ficha individual e autorização/falha em cada grupo. O UCS011 é um cenário negativo
+de controle de acesso que cobre os dois grupos: aplica a técnica de solicitar a
+operação diretamente, sem os controles da tela, às regras de autorização existentes.
 
 A preparação usou a revisão dos requisitos identificada por `5f3072939bb7ce5f90b64bf0faa5483bbb0d3260`.
 O hash fixa a versão consultada; os resumos funcionais e resultados necessários estão

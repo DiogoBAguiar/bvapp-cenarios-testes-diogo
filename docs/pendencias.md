@@ -42,6 +42,10 @@ FP1 a FP5: PDF individual, identidade, indisponibilidade e ativos associados con
 
 FP1 e A1: BLOQUEADOS até aprovação da matriz de autorização por modalidade. FP2 a FP4: andamento e falha constam dos novos CA03/CA01 da Feature #35912; expectativas propostas, pendentes de validação. FP5: recuperação e tentativas continuam indefinidas.
 
+## UCS011
+
+As recusas dos passos 2 a 7 e dos alternativos vêm dos critérios originais de autorização (CA-2.1.1.2.01, CA-2.1.1.3.01, CA-2.1.1.4.01, CA-2.1.4.1.3.01, CA-2.1.4.1.4.01) e podem ser avaliadas sem nova decisão. Permanecem pendentes, sem bloquear essas etapas: equivalência Administrador/Gerente com os perfis do sistema (por isso os perfis negativos não usam esses perfis); forma de apresentar a recusa; registro de tentativas recusadas na auditoria, que os critérios exigem apenas para operações efetuadas; resultado de sessão expirada no meio do fluxo. Restrição por registro (dono do cadastro) não existe nos requisitos e não é testada.
+
 ## Como encerrar uma pendência
 
 Registrar a decisão, responsável pela validação, data e referência ao requisito atualizado. Até isso ocorrer, a etapa dependente permanece BLOQUEADA para aceite. Não escolher valores, mensagens, perfis ou política de recuperação. A autoria acadêmica permanece de Diogo; esta revisão não declara apresentação ou aprovação humana concluída.

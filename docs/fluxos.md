@@ -1,6 +1,6 @@
 # Fluxos dos cenários
 
-Diagramas de apoio à leitura dos dez cenários documentais. Não representam testes executados nem decisões de negócio aprovadas. As pendências de cada etapa prevalecem sobre o resumo visual.
+Diagramas de apoio à leitura dos onze cenários documentais. Não representam testes executados nem decisões de negócio aprovadas. As pendências de cada etapa prevalecem sobre o resumo visual.
 
 [Voltar ao README](../README.md) · [Pendências](pendencias.md) · [Rastreabilidade](matriz-rastreabilidade.md)
 
@@ -16,3 +16,4 @@ Diagramas de apoio à leitura dos dez cenários documentais. Não representam te
 | UCS008 | [Exportar consulta filtrada de fabricantes em todos os formatos](fluxos/UCS008_exportacao_1.md) | [.py](../functional_tests/ativos/marcas/UCS008_exportacao_1.py) |
 | UCS009 | [Exportar ficha individual de fabricantes](fluxos/UCS009_exportacao_2.md) | [.py](../functional_tests/ativos/marcas/UCS009_exportacao_2.py) |
 | UCS010 | [Tratar autorização e falha de exportação de fabricantes](fluxos/UCS010_exportacao_3.md) | [.py](../functional_tests/ativos/marcas/UCS010_exportacao_3.py) |
+| UCS011 | [Recusar edição e exclusão por acesso direto sem permissão](fluxos/UCS011_acesso_direto_sem_permissao.md) | [.py](../functional_tests/ativos/UCS011_acesso_direto_sem_permissao.py) |
