@@ -30,7 +30,7 @@ FP1 a FP5: PDF individual, identidade do registro, indisponibilidade e entrega c
 
 ## UCS007
 
-FP2 e FP3: a recusa sem autorização está definida no critério Autorização do CA consolidado da Feature e no cenário "Usuário sem autorização" da US de origem #24457 (exportação recusada e nenhum relatório entregue); na ficha individual, também no CA #24439. Pendente apenas registrar esse critério entre os CA01–CA07 publicados da Feature #35875, e a forma de apresentar a recusa. FP1, FP4 e FP5: andamento e falha constam dos novos CA05/CA06 da Feature #35875; expectativas propostas, pendentes de validação. FP6: retomada e tentativas continuam sem definição.
+FP2 e FP3: a recusa sem autorização está definida no critério Autorização do CA consolidado da Feature e no cenário "Usuário sem autorização" da US de origem #24457 (exportação recusada e nenhum relatório entregue); na ficha individual, também no CA #24439. Pendente apenas registrar esse critério entre os CA01–CA07 publicados da Feature #35875, e a forma de apresentar a recusa. FP1, FP4 e FP5: andamento e falha constam dos novos CA05/CA06 da Feature #35875; expectativas propostas, pendentes de validação. Retomada e número de tentativas após falha continuam sem definição.
 
 ## UCS008
 
@@ -42,7 +42,7 @@ FP1 a FP5: PDF individual, identidade, indisponibilidade e ativos associados con
 
 ## UCS010
 
-FP2 e FP3: a recusa sem autorização está definida no critério Autorização do CA consolidado da Feature e no cenário "Usuário sem autorização" da US de origem #25954 (exportação recusada e nenhum relatório entregue). Pendente apenas registrar esse critério entre os CA01–CA09 publicados da Feature #35912, e a forma de apresentar a recusa. FP1, FP4 e FP5: andamento e falha constam dos novos CA03/CA01 da Feature #35912; expectativas propostas, pendentes de validação. FP6: recuperação e tentativas continuam indefinidas.
+FP2 e FP3: a recusa sem autorização está definida no critério Autorização do CA consolidado da Feature e no cenário "Usuário sem autorização" da US de origem #25954 (exportação recusada e nenhum relatório entregue). Pendente apenas registrar esse critério entre os CA01–CA09 publicados da Feature #35912, e a forma de apresentar a recusa. FP1, FP4 e FP5: andamento e falha constam dos novos CA03/CA01 da Feature #35912; expectativas propostas, pendentes de validação. Recuperação e número de tentativas após falha continuam sem definição.
 
 ## UCS011
 
@@ -52,6 +52,6 @@ As recusas dos passos 2 a 7 e dos alternativos vêm dos critérios originais de 
 
 Registrar a decisão, responsável pela validação, data e referência ao requisito atualizado. Até isso ocorrer, a etapa dependente permanece BLOQUEADA para aceite. Não escolher valores, mensagens, perfis ou política de recuperação. A autoria acadêmica permanece de Diogo; esta revisão não declara apresentação ou aprovação humana concluída.
 
-## Respostas a falhas e continuidade dos fluxos
+## Respostas a falhas
 
-As tabelas em [fluxos](fluxos.md) identificam por etapa as respostas documentadas e as lacunas. Permanecem pendentes: resposta técnica de inclusão/edição de fabricantes, detalhes da falha de consulta de inversores, recuperação após falha ou perda de resposta, preservação de campos, estado final de gravações interrompidas e política de nova tentativa. Os acréscimos sobre falha de inclusão/edição de inversores, exclusão e exportação continuam a validar. Uma divergência constatada na conferência não autoriza inventar autocorreção do sistema.
+Os fluxos trazem o resultado esperado de cada passo; quando um passo não produz esse resultado, o teste falha e o defeito é registrado. Continuam sem definição nos requisitos: resposta a falha técnica na inclusão e edição de fabricantes, detalhes da falha de consulta de inversores, recuperação após falha ou perda de resposta e política de nova tentativa.

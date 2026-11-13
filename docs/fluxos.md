@@ -1,6 +1,6 @@
 # Fluxos dos cenários
 
-Diagramas de apoio à leitura dos onze cenários documentais. Não representam testes executados nem decisões de negócio aprovadas. As pendências de cada etapa prevalecem sobre o resumo visual.
+Especificação completa de cada cenário: objetivo, requisitos, ator, dados de teste, passos com o resultado esperado, fluxos alternativos, regras e diagrama. As dúvidas em aberto ficam em [pendências](pendencias.md).
 
 [Voltar ao README](../README.md) · [Pendências](pendencias.md) · [Rastreabilidade](matriz-rastreabilidade.md)
 
