@@ -8,7 +8,7 @@ Os losangos representam a avaliação da etapa no cenário, não novos controles
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia com o Perfil A e registrar valores iniciais"]
+    inicio["Preparar massa fictícia pelo Administrador e registrar valores iniciais"]
     parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
     concluir["Registrar resultado do percurso; recusas conferidas pelo dado inalterado"]
     inicio --> p1
@@ -42,7 +42,7 @@ flowchart TD
     q6 -->|Não| d6["DEFEITO: permissão de edição tratada como permissão de exclusão"]
     d6 --> parar
     q6 -->|Sim| p7
-    p7["Perfil A confere os dois registros contra os valores iniciais"]
+    p7["Administrador confere os dois registros contra os valores iniciais"]
     p7 --> q7{"Valores iguais aos iniciais?"}
     q7 -->|Não| d7["DEFEITO: alteração gravada apesar da recusa; registrar evidência"]
     d7 --> parar
@@ -119,17 +119,18 @@ de identificador entre registros por um perfil que tenha a autorização da oper
 
 ### ATOR
 
-Perfis sintéticos para esta análise, não novos papéis do produto:
+- Administrador (ator principal): prepara a massa e confere os dados; não executa as tentativas sem permissão.
+
+Outros atores — perfis sintéticos para esta análise, não novos papéis do produto:
 - Perfil L: autenticado, com autorização para listar e visualizar ativos e marcas; sem
   autorização para editar ou excluir; não é Administrador nem Gerente.
 - Perfil E: autenticado, com autorização para editar marcas; não é administrador.
-- Perfil A: Administrador, usado apenas para preparar a massa e conferir os dados.
 
 
 ### PRÉ-CONDIÇÕES
 
 - Ambiente futuro de estudo isolado, sem dados de produção ou ações reais nesta entrega.
-- Massa sintética criada pelo Perfil A antes do fluxo; valores iniciais registrados.
+- Massa sintética criada pelo Administrador antes do fluxo; valores iniciais registrados.
 - A recusa é avaliada pela operação solicitada, e não pela ausência de botão na tela.
 
 
@@ -144,7 +145,7 @@ Marca Estudo Acesso Alterada. Nomes e valores são fictícios e servem apenas de
 
 ### [FP] FLUXO PRINCIPAL
 
-1. PREPARAR O ACESSO DIRETO. Com o Perfil A, abrir a edição e a solicitação de exclusão
+1. PREPARAR O ACESSO DIRETO. Como Administrador, abrir a edição e a solicitação de exclusão
    de cada registro pela interface e anotar o endereço e a solicitação usados, sem
    confirmar nenhuma alteração. Essa anotação é técnica de teste, não regra do sistema.
 2. CONTROLE DE AUTENTICAÇÃO. Com o Perfil L, abrir a consulta e o detalhe dos dois
@@ -162,7 +163,7 @@ Marca Estudo Acesso Alterada. Nomes e valores são fictícios e servem apenas de
 6. EXCLUIR MARCA COM PERMISSÃO SÓ DE EDIÇÃO. Com o Perfil E, enviar diretamente a
    solicitação de exclusão da Marca Estudo Acesso. Esperado: recusa; marca preservada e
    Ativa, sem passar a Inativa (CA-2.1.4.1.4.01: permissão de edição não substitui).
-7. CONFERIR INALTERAÇÃO. Com o Perfil A, consultar os dois registros e comparar com os
+7. CONFERIR INALTERAÇÃO. Como Administrador, consultar os dois registros e comparar com os
    valores iniciais: potência 5 kW, nome original da marca, situações Ativo.
 
 

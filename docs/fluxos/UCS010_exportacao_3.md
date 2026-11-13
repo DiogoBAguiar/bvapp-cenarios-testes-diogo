@@ -12,7 +12,7 @@ flowchart TD
     parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
     concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
     inicio --> p1
-    p1["Perfil A solicita exportação coletiva e ficha; conferir andamento"]
+    p1["Administrador solicita exportação coletiva e ficha; conferir andamento"]
     p1 --> q1{"Etapa produziu o resultado esperado?"}
     q1 -->|Não ou não comprovado| f1["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
     f1 --> parar
@@ -56,7 +56,7 @@ As referências CAxx abaixo são rótulos dentro da Feature indicada, não IDs g
 
 | Etapa ou variante | Resposta prevista ou pendência | Base |
 | --- | --- | --- |
-| 1. Perfil A solicita exportação coletiva e ficha; conferir andamento | Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes. Não continuar etapas dependentes. | #35912 CA03, acréscimo a validar |
+| 1. Administrador solicita exportação coletiva e ficha; conferir andamento | Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes. Não continuar etapas dependentes. | #35912 CA03, acréscimo a validar |
 | 2. Perfil B sem consulta solicita exportação coletiva | Exportação recusada e nenhum relatório entregue. Arquivo entregue é defeito de controle de acesso. | Critério Autorização da Feature; US #25954, cenário "Usuário sem autorização" |
 | 3. Perfil C sem visualização solicita ficha individual | Exportação recusada e nenhuma ficha entregue. Arquivo entregue é defeito de controle de acesso. | Critério Autorização da Feature; US #25954; CA-2.1.4.1.2.01 na separação listagem/visualização |
 | 4. Avaliar falha controlada na exportação coletiva | Falha não informada ou erro entregue como relatório: divergência da proposta. Não continuar etapas dependentes. | #35912 CA01, a validar |
@@ -100,8 +100,9 @@ Resultados de acréscimos a validar são expectativas propostas. Não aprovar es
 
 ### ATOR
 
-Perfis sintéticos para esta análise, não novos papéis do produto:
-- Perfil A: autorização para consultar a listagem e para visualizar o registro.
+- Administrador (ator principal): autorização para consultar a listagem e para visualizar o registro; prepara a massa, executa as exportações permitidas e confere os resultados.
+
+Outros atores — perfis sintéticos para esta análise, não novos papéis do produto:
 - Perfil B: sem autorização para consultar a listagem.
 - Perfil C: autorização para consultar a listagem, sem autorização para visualizar o registro.
 
@@ -122,7 +123,7 @@ Todos os dados são fictícios; não constituem limites ou regras novas.
 
 ### [FP] FLUXO PRINCIPAL
 
-1. CONTROLE. Com o Perfil A, solicitar a exportação coletiva e a ficha individual de ESTUDO-MARCAS-01;
+1. CONTROLE. Como Administrador, solicitar a exportação coletiva e a ficha individual de ESTUDO-MARCAS-01;
    anotar o endereço e a solicitação usados. Durante a preparação, verificar indicação de
    andamento e controle da ação indisponível para novo acionamento.
 2. SEM CONSULTA. Com o Perfil B, solicitar a exportação coletiva, inclusive diretamente pelo
@@ -131,7 +132,7 @@ Todos os dados são fictícios; não constituem limites ou regras novas.
 3. SEM VISUALIZAÇÃO. Com o Perfil C, solicitar a ficha individual de ESTUDO-MARCAS-01, inclusive
    diretamente pelo endereço anotado no passo 1.
    Esperado: exportação recusada e nenhuma ficha entregue.
-4. Preparar a variante de falha controlada de obtenção e, com o Perfil A, solicitar exportação.
+4. Preparar a variante de falha controlada de obtenção e, como Administrador, solicitar exportação.
    Esperado: falha informada; conteúdo de erro não é entregue como relatório.
 5. Repetir a variante de falha para a ficha individual, mantendo alvo existente.
    Esperado: falha informada; nenhum relatório de erro apresentado como ficha.

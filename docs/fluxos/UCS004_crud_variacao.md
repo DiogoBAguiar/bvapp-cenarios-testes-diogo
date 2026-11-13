@@ -109,7 +109,7 @@ Resultados de acréscimos a validar são expectativas propostas. Não aprovar es
 
 ### ATOR
 
-Usuário com autorização para adicionar fabricantes, listar, visualizar e editar marcas; administrador para remover marcas.
+Administrador. Os requisitos permitem adicionar, listar, visualizar e editar marcas a qualquer usuário autorizado, e reservam a remoção a administradores; o cenário usa o Administrador porque ele tem todas essas autorizações.
 
 
 ### PRÉ-CONDIÇÕES

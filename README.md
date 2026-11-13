@@ -384,7 +384,7 @@ flowchart TD
     parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
     concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
     inicio --> p1
-    p1["Perfil A solicita exportação coletiva e ficha; conferir andamento"]
+    p1["Administrador solicita exportação coletiva e ficha; conferir andamento"]
     p1 --> q1{"Etapa produziu o resultado esperado?"}
     q1 -->|Não ou não comprovado| f1["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
     f1 --> parar
@@ -524,7 +524,7 @@ flowchart TD
     parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
     concluir["Registrar resultado do percurso; não declarar aceite de regras pendentes"]
     inicio --> p1
-    p1["Perfil A solicita exportação coletiva e ficha; conferir andamento"]
+    p1["Administrador solicita exportação coletiva e ficha; conferir andamento"]
     p1 --> q1{"Etapa produziu o resultado esperado?"}
     q1 -->|Não ou não comprovado| f1["Registrar divergência ou impossibilidade de conferir; correção e retomada pendentes"]
     f1 --> parar
@@ -568,7 +568,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    inicio["Preparar massa fictícia com o Perfil A e registrar valores iniciais"]
+    inicio["Preparar massa fictícia pelo Administrador e registrar valores iniciais"]
     parar["AVALIAÇÃO: registrar resultado e interromper etapas dependentes desta execução"]
     concluir["Registrar resultado do percurso; recusas conferidas pelo dado inalterado"]
     inicio --> p1
@@ -602,7 +602,7 @@ flowchart TD
     q6 -->|Não| d6["DEFEITO: permissão de edição tratada como permissão de exclusão"]
     d6 --> parar
     q6 -->|Sim| p7
-    p7["Perfil A confere os dois registros contra os valores iniciais"]
+    p7["Administrador confere os dois registros contra os valores iniciais"]
     p7 --> q7{"Valores iguais aos iniciais?"}
     q7 -->|Não| d7["DEFEITO: alteração gravada apesar da recusa; registrar evidência"]
     d7 --> parar

@@ -98,7 +98,7 @@ Resultados de acréscimos a validar são expectativas propostas. Não aprovar es
 
 ### ATOR
 
-Usuário autenticado com autorização de inclusão, listagem, visualização e edição; na exclusão, Administrador ou Gerente conforme a fonte. A equivalência dos perfis permanece pendente.
+Administrador. Os requisitos permitem inclusão, listagem, visualização e edição a qualquer usuário autenticado e autorizado, e reservam a exclusão ao Administrador ou Gerente; o cenário usa o Administrador porque ele tem todas essas autorizações. A equivalência dos perfis Administrador/Gerente com os do sistema permanece pendente.
 
 
 ### PRÉ-CONDIÇÕES

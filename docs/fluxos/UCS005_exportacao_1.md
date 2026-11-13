@@ -90,7 +90,7 @@ Resultados de acréscimos a validar são expectativas propostas. Não aprovar es
 
 ### ATOR
 
-Pessoa usuária com autorização para consultar a listagem (exportação coletiva), conforme o critério Autorização da Feature de exportação.
+Administrador. O critério Autorização da Feature de exportação exige apenas autorização para consultar a listagem (exportação coletiva); o cenário usa o Administrador, que tem essa autorização.
 A recusa sem essa autorização é verificada no UCS007.
 
 
