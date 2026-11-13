@@ -1,9 +1,9 @@
 '''
 UCS005 - Exportar consulta filtrada de inversores em todos os formatos
 
-Objetivo: Permitir que o usuário exporte o resultado completo de uma
-consulta filtrada de inversores, em cada formato obrigatório, na mesma
-ordem da consulta.
+Objetivo: Permitir que o administrador exporte o resultado completo de
+uma consulta filtrada de inversores, em cada formato obrigatório, na
+mesma ordem da consulta.
 
 Requisitos:
 - #35875 - Exportação de inversores
@@ -11,56 +11,59 @@ Requisitos:
 - US #24457
 
 Ator:
-- Usuário com autorização para consultar a listagem de inversores
+- Administrador
 '''
 
 # 🟢 [FP] - FLUXO PRINCIPAL
 # ---------------------------------------------------------------
 
 # Existem 23 inversores fictícios 'ESTUDO-INVERSORES-01' a '23' que
-# atendem ao filtro e três 'CONTROLE-01' a '03' que não atendem.
-# A página da consulta mostra dez registros.
+# atendem ao filtro e três 'CONTROLE-01' a '03' que não atendem. A
+# página da consulta mostra dez registros.
 
-# O ator acessa a página de consulta de inversores. Ele observa que
-# existem filtros por série, modelo, fabricante, fornecedor, usina,
+# O administrador acessa a página de consulta de inversores. Ele observa
+# que existem filtros por série, modelo, fabricante, fornecedor, usina,
 # operadora e situação.
 
-# O ator aplica um filtro que seleciona os 23 inversores de estudo e
-# confere que o total exibido é 23.
+# O administrador aplica um filtro que seleciona os 23 inversores de
+# estudo e confere que o total exibido é 23.
 
-# O ator escolhe uma ordenação e seleciona a exportação em PDF. [A1]
+# O administrador escolhe uma ordenação e seleciona a exportação em PDF.
+# [A1]
 
 # O sistema inicia o download e informa o resultado da obtenção do
 # arquivo.
 
-# O ator abre o arquivo e verifica que os 23 inversores de estudo estão
-# nele, que nenhum dos três controles aparece [RN2] e que a ordem é a
-# mesma da consulta. [RN3]
+# O administrador abre o arquivo e verifica que os 23 inversores de
+# estudo estão nele, que nenhum dos três controles aparece [RN2] e que a
+# ordem é a mesma da consulta. [RN3]
 
-# O ator repete a exportação nos demais formatos obrigatórios. [RN1]
+# O administrador repete a exportação nos demais formatos obrigatórios.
+# [RN1]
 
-# No arquivo CSV, o ator confere as colunas e os valores de cada
-# inversor exportado. [RN4]
+# No arquivo CSV, o administrador confere as colunas e os valores de
+# cada inversor exportado. [RN4]
 
-# O ator vai para outra página da consulta e repete a exportação.
-# O arquivo continua com os 23 inversores. [RN2] [A2]
+# O administrador vai para outra página da consulta e repete a
+# exportação. O arquivo continua com os 23 inversores. [RN2] [A2]
 
 
 # 🟠 [A1] - FORMATOS DIVERGENTES ENTRE AS FONTES
 # ---------------------------------------------------------------
 
-# O ator verifica que o sistema oferece formatos diferentes dos exigidos
-# por uma das fontes. Ele registra o conflito e marca a avaliação dos
-# formatos como BLOQUEADA até a decisão dos stakeholders. CSV não
-# substitui Excel. [RN1]
+# O administrador verifica que o sistema oferece formatos diferentes dos
+# exigidos por uma das fontes. Ele registra o conflito e marca a
+# avaliação dos formatos como BLOQUEADA até a decisão dos stakeholders.
+# CSV não substitui Excel. [RN1]
 
 
 # 🟠 [A2] - CONSULTA VAZIA
 # ---------------------------------------------------------------
 
-# O ator aplica um filtro que não retorna nenhum inversor e solicita a
-# exportação. O comportamento esperado ainda não está definido; o ator
-# registra o que observar, sem presumir arquivo vazio.
+# O administrador aplica um filtro que não retorna nenhum inversor e
+# solicita a exportação. O comportamento esperado ainda não está
+# definido; o administrador registra o que observar, sem presumir
+# arquivo vazio.
 
 
 # 🟣 [RN1] FORMATOS OBRIGATÓRIOS

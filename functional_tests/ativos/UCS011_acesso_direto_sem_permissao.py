@@ -13,64 +13,64 @@ Requisitos:
 - #24278 - Exclusão de marcas (CA #24595)
 
 Ator:
-- Perfil L: pode consultar e visualizar ativos e marcas; não pode editar
-  nem excluir; não é Administrador nem Gerente
-- Perfil E: pode editar marcas; não é administrador
-- Perfil A: Administrador, usado só para preparar e conferir os dados
+- Administrador (prepara e confere os dados)
+- Usuário do Perfil L: pode consultar e visualizar ativos e marcas; não
+  pode editar nem excluir; não é Administrador nem Gerente
+- Usuário do Perfil E: pode editar marcas; não é administrador
 '''
 
 # 🟢 [FP] - FLUXO PRINCIPAL
 # ---------------------------------------------------------------
 
-# Existem o inversor 'INV-ESTUDO-ACESSO-001', com 5 kW, situação 'Ativo',
-# sem painéis nem histórico, e a marca 'Marca Estudo Acesso', situação
-# 'Ativo'. Os valores iniciais estão anotados.
+# Existem o inversor 'INV-ESTUDO-ACESSO-001', com 5 kW, situação
+# 'Ativo', sem painéis nem histórico, e a marca 'Marca Estudo Acesso',
+# situação 'Ativo'. Os valores iniciais estão anotados.
 
-# Com o Perfil A, o ator abre a edição e a exclusão de cada registro pela
+# O administrador abre a edição e a exclusão de cada registro pela
 # interface e anota o endereço e a solicitação usados, sem confirmar
 # nenhuma alteração.
 
-# Com o Perfil L, o ator abre a consulta e o detalhe dos dois registros.
+# O usuário do Perfil L abre a consulta e o detalhe dos dois registros.
 # O sistema permite o acesso. [RN1] [A1]
 
-# Com o Perfil L, o ator abre diretamente o endereço de edição do
+# O usuário do Perfil L abre diretamente o endereço de edição do
 # inversor e solicita gravar a potência de 6 kW, sem usar o botão da
 # tela. [A2][A3]
 
 # O sistema recusa a gravação e a potência continua 5 kW. [RN1]
 
-# Com o Perfil L, o ator envia diretamente a solicitação de exclusão do
+# O usuário do Perfil L envia diretamente a solicitação de exclusão do
 # inversor.
 
 # O sistema recusa a exclusão, sem apresentá-la como concluída; o
 # inversor continua 'Ativo'. [RN2]
 
-# Com o Perfil L, o ator abre diretamente o endereço de edição da marca
-# e solicita gravar o nome 'Marca Estudo Acesso Alterada'.
+# O usuário do Perfil L abre diretamente o endereço de edição da marca e
+# solicita gravar o nome 'Marca Estudo Acesso Alterada'.
 
 # O sistema recusa a gravação e o nome não muda. [RN1]
 
-# Com o Perfil E, o ator envia diretamente a solicitação de exclusão da
+# O usuário do Perfil E envia diretamente a solicitação de exclusão da
 # marca.
 
 # O sistema recusa a exclusão e a marca continua 'Ativo'. [RN2]
 
-# Com o Perfil A, o ator consulta os dois registros e verifica que
-# continuam com os valores iniciais. [RN3]
+# O administrador consulta os dois registros e verifica que continuam
+# com os valores iniciais. [RN3]
 
 
 # 🟠 [A1] - OPÇÕES NA INTERFACE
 # ---------------------------------------------------------------
 
-# Com o Perfil L, o ator abre a consulta e registra se as opções de
-# editar e excluir aparecem. Esconder a opção não substitui a recusa
-# verificada no fluxo principal.
+# O usuário do Perfil L abre a consulta, e o administrador registra se
+# as opções de editar e excluir aparecem. Esconder a opção não substitui
+# a recusa verificada no fluxo principal.
 
 
 # 🟠 [A2] - ALTERAR STATUS DO INVERSOR
 # ---------------------------------------------------------------
 
-# Com o Perfil L, o ator solicita diretamente a alteração do status do
+# O usuário do Perfil L solicita diretamente a alteração do status do
 # inversor.
 
 # O sistema recusa e o status não muda (CA-2.1.1.3.01, US #29059).
@@ -79,7 +79,7 @@ Ator:
 # 🟠 [A3] - SEM AUTENTICAÇÃO
 # ---------------------------------------------------------------
 
-# Sem sessão iniciada, o ator abre diretamente o endereço de edição do
+# Sem sessão iniciada, alguém abre diretamente o endereço de edição do
 # inversor e solicita a gravação.
 
 # O sistema recusa e o cadastro não muda (CA-2.1.1.3.01).
@@ -103,8 +103,8 @@ Ator:
 # ---------------------------------------------------------------
 
 # A recusa é confirmada pelos dados inalterados, e não pela ausência de
-# botão na tela. A forma da recusa (mensagem, código ou redirecionamento)
-# não está definida e não é exigida.
+# botão na tela. A forma da recusa (mensagem, código ou
+# redirecionamento) não está definida e não é exigida.
 
 
 # Pendências de validação: docs/pendencias.md (UCS011).

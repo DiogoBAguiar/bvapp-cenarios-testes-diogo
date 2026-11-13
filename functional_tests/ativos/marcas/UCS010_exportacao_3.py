@@ -11,46 +11,48 @@ Requisitos:
 - US #25954
 
 Ator:
-- Perfil A: pode consultar a listagem e visualizar o registro
-- Perfil B: não pode consultar a listagem
-- Perfil C: pode consultar a listagem, mas não visualizar o registro
+- Administrador (prepara, exporta e confere os resultados)
+- Usuário do Perfil B: não pode consultar a listagem
+- Usuário do Perfil C: pode consultar a listagem, mas não visualizar
+  o registro
 '''
 
 # 🟢 [FP] - FLUXO PRINCIPAL
 # ---------------------------------------------------------------
 
-# Existe o fabricante fictício 'ESTUDO-MARCAS-01'. Os perfis A, B e C são
+# Existe o fabricante fictício 'ESTUDO-MARCAS-01'. Os perfis B e C são
 # sintéticos para este teste, não papéis novos do produto.
 
-# Com o Perfil A, o ator acessa a consulta de marcas, aplica um filtro e
+# O administrador acessa a consulta de marcas, aplica um filtro e
 # seleciona a exportação coletiva. [A1][A3]
 
 # Enquanto o arquivo é preparado, o sistema indica que a exportação está
 # em andamento e impede um novo acionamento da mesma ação. [RN3]
 
-# O sistema entrega o arquivo. O ator anota o endereço e a solicitação
-# usados.
+# O sistema entrega o arquivo. O administrador anota o endereço e a
+# solicitação usados.
 
-# O ator seleciona 'ESTUDO-MARCAS-01' e a exportação da ficha
+# O administrador seleciona 'ESTUDO-MARCAS-01' e a exportação da ficha
 # individual. [A2][A4]
 
-# O sistema entrega a ficha. O ator anota o endereço e a solicitação
-# usados. [A5]
+# O sistema entrega a ficha. O administrador anota o endereço e a
+# solicitação usados. [A5]
 
 
 # 🟠 [A1] - EXPORTAÇÃO COLETIVA SEM AUTORIZAÇÃO DE CONSULTA
 # ---------------------------------------------------------------
 
-# Com o Perfil B, o ator abre diretamente o endereço anotado para a
+# O usuário do Perfil B abre diretamente o endereço anotado para a
 # exportação coletiva, sem usar os controles da tela.
 
-# O sistema recusa a exportação e não entrega nenhum relatório. [RN1][RN2]
+# O sistema recusa a exportação e não entrega nenhum relatório.
+# [RN1][RN2]
 
 
 # 🟠 [A2] - FICHA SEM AUTORIZAÇÃO DE VISUALIZAÇÃO
 # ---------------------------------------------------------------
 
-# Com o Perfil C, o ator abre diretamente o endereço anotado para a ficha
+# O usuário do Perfil C abre diretamente o endereço anotado para a ficha
 # de 'ESTUDO-MARCAS-01'.
 
 # O sistema recusa a exportação e não entrega nenhuma ficha. [RN1][RN2]
@@ -59,8 +61,8 @@ Ator:
 # 🟠 [A3] - FALHA NA EXPORTAÇÃO COLETIVA
 # ---------------------------------------------------------------
 
-# Com uma falha de obtenção preparada, o ator, com o Perfil A, solicita
-# a exportação coletiva.
+# Com uma falha de obtenção preparada, o administrador solicita a
+# exportação coletiva.
 
 # O sistema informa a falha e não entrega o conteúdo do erro como
 # relatório. [RN4]
@@ -69,8 +71,8 @@ Ator:
 # 🟠 [A4] - FALHA NA FICHA INDIVIDUAL
 # ---------------------------------------------------------------
 
-# Com a mesma falha preparada e o fabricante existente, o ator solicita
-# a ficha individual.
+# Com a mesma falha preparada e o fabricante existente, o administrador
+# solicita a ficha individual.
 
 # O sistema informa a falha e não apresenta o erro como ficha. [RN4]
 
@@ -78,9 +80,9 @@ Ator:
 # 🟠 [A5] - OPÇÕES NA INTERFACE
 # ---------------------------------------------------------------
 
-# Com os Perfis B e C, o ator abre a consulta e registra se as opções de
-# exportação aparecem. Esconder a opção não substitui a recusa
-# verificada em [A1] e [A2].
+# Os usuários dos Perfis B e C abrem a consulta, e o administrador
+# registra se as opções de exportação aparecem. Esconder a opção não
+# substitui a recusa verificada em [A1] e [A2].
 
 
 # 🟣 [RN1] AUTORIZAÇÃO POR MODALIDADE
@@ -94,8 +96,8 @@ Ator:
 # ---------------------------------------------------------------
 
 # Uma solicitação sem a autorização correspondente é recusada e nenhum
-# arquivo é entregue. Qualquer arquivo entregue em [A1] ou [A2] é defeito
-# de controle de acesso.
+# arquivo é entregue. Qualquer arquivo entregue em [A1] ou [A2] é
+# defeito de controle de acesso.
 
 # 🟣 [RN3] EXPORTAÇÃO EM ANDAMENTO
 # ---------------------------------------------------------------
