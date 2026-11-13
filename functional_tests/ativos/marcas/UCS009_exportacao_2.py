@@ -1,63 +1,81 @@
-"""
-UCS009 — Exportar ficha individual de fabricantes
+'''
+UCS009 - Exportar ficha individual de fabricantes
 
-Autoria / responsável acadêmico: Diogo Bruno Ferreira Martins de Aguiar
-Preparação assistida por IA; revisão humana e apresentação pendentes.
-Revisão documental: 06/11/2026. Criação: 05/11/2026. Revisão-base: 5f3072939bb7ce5f90b64bf0faa5483bbb0d3260
-Natureza: cenário documental; não é teste automatizado; não executado.
+Objetivo: Permitir que o usuário exporte em PDF a ficha de um fabricante
+específico, com seus equipamentos associados, e receba aviso quando o
+fabricante não estiver disponível.
 
-OBJETIVO
-Conferir a identidade da ficha individual e a resposta quando o alvo está indisponível.
-É um fluxo de relatório, sem operações CRUD divididas para aumentar a contagem.
+Requisitos:
+- #35912 - Exportação de fabricantes
+- #24273 - Consulta de marcas
+- US #25954
 
-REQUISITOS RELACIONADOS
-Grupo: Cadastro de Marcas (Fabricantes).
-Feature #35912 — Exportação de fabricantes. Relacionadas: Consulta #24273 e US #25954.
-Tópicos da consolidação local (mapeamento revisado em docs/matriz-rastreabilidade.md): Arquivo individual; Registro individual indisponível; Entrega do arquivo; Ativos da marca.
+Ator:
+- Usuário com autorização para visualizar o registro do fabricante
+'''
 
-SITUAÇÃO DAS REGRAS E BLOQUEIOS
-FP1 a FP5: PDF individual, identidade, indisponibilidade e ativos associados constam dos novos CA02/CA04/CA07/CA08 da Feature #35912; aguardam validação dos stakeholders. FP2: confirmar indicação de download, que não está definida nesses nove CAs. Confirmar campos completos do PDF; não presumir que identidade correta valida todo o conteúdo.
-Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
+# 🟢 [FP] - FLUXO PRINCIPAL
+# ---------------------------------------------------------------
 
-ATOR
-Pessoa usuária com autorização para visualizar o registro (exportação individual), conforme o critério Autorização da Feature de exportação.
-A recusa sem essa autorização é verificada no UCS010.
+# Existem os fabricantes fictícios 'ESTUDO-MARCAS-01' e 'CONTROLE-01'.
+# 'ESTUDO-MARCAS-01' tem dois equipamentos ativos vinculados e um
+# equipamento excluído; há ainda um equipamento de outra marca.
 
-PRÉ-CONDIÇÕES
-Ambiente futuro isolado e massa sintética já preparada. Nenhuma criação de cadastro
-ocorre neste cenário de exportação. Na execução futura, preservar os controles.
-As definições pendentes são resolvidas antes de aprovar a etapa dependente.
+# O ator acessa a página de consulta de marcas e seleciona
+# 'ESTUDO-MARCAS-01'.
 
-DADOS DE TESTE
-Um registro fictício ESTUDO-MARCAS-01 e outro CONTROLE-01.
-Para fabricantes, dois equipamentos não excluídos vinculados ao alvo, um excluído
-e um de outra marca como controles; não se solicita manutenção desses equipamentos.
-Todos os dados são fictícios; não constituem limites ou regras novas.
+# O ator seleciona a opção de exportar a ficha em PDF. [A1]
 
-[FP] FLUXO PRINCIPAL
-1. Selecionar ESTUDO-MARCAS-01 na consulta e solicitar sua ficha PDF.
-2. Verificar início de download e informação do resultado.
-3. Abrir o documento em futura execução e conferir a identidade do alvo, distinguindo-a
-   de CONTROLE-01. Não aceitar PDF coletivo como substituto da ficha.
-4. Conferir os equipamentos associados não excluídos por série, tipo e situação; o excluído e o de outra marca não devem integrar essa relação.
-5. Na variante com alvo previamente indisponível, repetir a solicitação. Esperado:
-   informar indisponibilidade; não entregar ficha de outro registro.
+# O sistema inicia o download e informa o resultado da obtenção do
+# arquivo.
 
-[A] FLUXOS ALTERNATIVOS
-1. Alvo diferente no PDF: resultado divergente; conferir identificação, não apenas existência do arquivo.
-2. Campos de PDF não definidos: marcar avaliação desses campos BLOQUEADA, mesmo com identidade correta.
+# O ator abre o PDF e verifica que ele identifica 'ESTUDO-MARCAS-01', e
+# não 'CONTROLE-01'. [RN1] [A2]
 
-REGRAS DE NEGÓCIO
-Cada resultado proposto está sujeito à situação da regra indicada acima. Formato, conjunto, identidade e
-entrega são verificações distintas. A implementação não define o resultado esperado.
-Não definir mensagens literais, prazos, novas tentativas ou campos não especificados.
+# O ator confere que a ficha lista os dois equipamentos ativos
+# vinculados, com série, tipo e situação, e que o equipamento excluído e
+# o de outra marca não aparecem. [RN2]
 
-RESULTADOS ESPERADOS
-Os resultados aparecem junto a cada ação para permitir comparação passo a passo.
-Nenhum arquivo foi gerado ou cenário executado. Em futura execução registrar
-versão, data, massa, esperado, observado e evidência, sem declarar sucesso antecipado.
+# O ator registra como pendente a conferência dos demais campos da
+# ficha. [RN3]
 
-PENDÊNCIAS
-Consultar também SITUAÇÃO DAS REGRAS E BLOQUEIOS acima.
-Campos completos de PDF coletivo e individual, unidades e apresentação de dados ausentes precisam de decisão. O conteúdo CSV descrito não autoriza presumir igualdade dos demais formatos. Definir consulta vazia, fotografia temporal do inventário e recuperação após perda de resposta.
-"""
+
+# 🟠 [A1] - FABRICANTE INDISPONÍVEL
+# ---------------------------------------------------------------
+
+# O fabricante selecionado deixou de estar disponível antes da
+# solicitação. O ator seleciona a exportação da ficha.
+
+# O sistema informa que o fabricante está indisponível e não entrega a
+# ficha de outro registro.
+
+
+# 🟠 [A2] - FABRICANTE DIFERENTE NO PDF
+# ---------------------------------------------------------------
+
+# O ator verifica que o PDF entregue identifica outro fabricante. Ele
+# registra o resultado como divergente, mesmo que o arquivo exista.
+
+
+# 🟣 [RN1] FICHA DO REGISTRO SELECIONADO
+# ---------------------------------------------------------------
+
+# A ficha individual é um PDF do fabricante selecionado. Um PDF coletivo
+# não substitui a ficha.
+
+# 🟣 [RN2] EQUIPAMENTOS ASSOCIADOS
+# ---------------------------------------------------------------
+
+# A ficha lista os equipamentos não excluídos vinculados ao fabricante
+# (CAs da Feature #35912, a validar).
+
+# 🟣 [RN3] CAMPOS DA FICHA
+# ---------------------------------------------------------------
+
+# Os campos completos da ficha ainda não estão definidos. Até a
+# definição, a avaliação desses campos fica BLOQUEADA, mesmo com a
+# identidade correta.
+
+
+# Pendências de validação: docs/pendencias.md (UCS009).
+# Especificação completa: docs/fluxos/UCS009_exportacao_2.md.

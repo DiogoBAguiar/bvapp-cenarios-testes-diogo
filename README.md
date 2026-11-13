@@ -7,9 +7,12 @@ da disciplina Verificação, Validação e Teste de Software.
 
 São **11 cenários documentais**: quatro CRUD completos, com objetivos distintos,
 seis cenários de exportação e um cenário negativo de controle de acesso. O recorte individual confirmado é **inversores e
-fabricantes (marcas)**. Cada arquivo contém
-identificador, objetivo, requisitos, ator, pré-condições, dados, fluxo principal,
-alternativas, regras, resultados esperados e pendências.
+fabricantes (marcas)**. Cada `.py` segue o formato do exemplo do professor: um
+cabeçalho com identificador, objetivo, requisitos e ator, seguido do fluxo principal
+`[FP]`, dos fluxos alternativos `[A1]`, `[A2]`… e das regras de negócio `[RN1]`,
+`[RN2]`…, citados no ponto do fluxo em que se aplicam. Pré-condições, dados de teste,
+bloqueios e pendências de cada cenário ficam na especificação completa em
+[docs/fluxos](docs/fluxos.md) e em [pendências](docs/pendencias.md).
 
 **Não há implementação, interface, teste automatizado ou teste executado.** Os `.py`
 guardam somente documentação, conforme o exemplo do professor. Não é necessário

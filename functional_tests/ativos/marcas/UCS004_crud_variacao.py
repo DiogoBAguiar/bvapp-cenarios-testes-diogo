@@ -1,82 +1,119 @@
-"""
-UCS004 — Manter fabricante com validação de contato e cancelamento
+'''
+UCS004 - Manter fabricante com validação de contato e cancelamento
 
-Autoria / responsável acadêmico: Diogo Bruno Ferreira Martins de Aguiar
-Preparação: assistência de IA; revisão pessoal e apresentação pelo responsável pendentes.
-Revisão documental: 06/11/2026. Criação: 05/11/2026
-Natureza: especificação documental, não teste automatizado nem evidência de execução.
-Revisão-base: 5f3072939bb7ce5f90b64bf0faa5483bbb0d3260
-Grupo de requisitos: Cadastro de Marcas (Fabricantes) (a numeração da fonte é preservada).
+Objetivo: Garantir que o ciclo de cadastro, consulta, alteração e
+exclusão de um fabricante não grave e-mail inválido nem alterações
+canceladas, e preserve a identificação usada pelos equipamentos após
+a inativação.
 
-OBJETIVO
-Exercitar o CRUD completo de fabricante diante de e-mail inválido e desistência
-da edição e da exclusão. O objetivo é impedir gravação inválida ou cancelada e
-preservar a identificação usada pelos equipamentos após a inativação confirmada.
+Requisitos:
+- #24272 - Inclusão de marcas
+- #24273 - Consulta de marcas
+- #24275 - Atualização de marcas
+- #24278 - Exclusão de marcas
 
-REQUISITOS RELACIONADOS
-Features do OpenProject: #24272 (Inclusão), #24273 (Consulta), #24275 (Atualização) e #24278 (Exclusão).
-Referências locais da consolidação (não são IDs do OpenProject): CA-2.1.4.1.1.01, CA-2.1.4.1.1.02, CA-2.1.4.1.1.03, CA-2.1.4.1.1.05, CA-2.1.4.1.1.06, CA-2.1.4.1.1.11, CA-2.1.4.1.2.01, CA-2.1.4.1.2.04, CA-2.1.4.1.2.09, CA-2.1.4.1.3.02, CA-2.1.4.1.3.03, CA-2.1.4.1.3.04, CA-2.1.4.1.3.05, CA-2.1.4.1.3.11, CA-2.1.4.1.4.01, CA-2.1.4.1.4.02, CA-2.1.4.1.4.03, CA-2.1.4.1.4.04, CA-2.1.4.1.4.07.
+Ator:
+- Usuário com autorização para adicionar, consultar e editar marcas
+- Administrador (exclusão)
+'''
 
-SITUAÇÃO DAS REGRAS E BLOQUEIOS
-Aplicam-se as pendências de UCS002. FP2 e FP3: detalhe de contatos, validação de e-mail e cancelamento foram especificados na revisão, mas aguardam validação; as expectativas desses trechos são propostas, não um aceite presumido. #24553 já define Ativo/Inativo. #24600 já distingue exclusão física sem vínculos de inativação com vínculos; a prova da remoção física precisa ser acordada.
-Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
+# 🟢 [FP] - FLUXO PRINCIPAL
+# ---------------------------------------------------------------
 
-ATOR
-Usuário com autorização para adicionar fabricantes, listar, visualizar e editar marcas; administrador para remover marcas.
+# O ator acessa a página de cadastro de marcas e preenche nome
+# 'Marca Estudo Cancelamento', identificação internacional, situação
+# 'Ativo' e e-mail de suporte 'suporte@example.invalid'.
 
-PRÉ-CONDIÇÕES
-- Ambiente futuro de estudo isolado, sem dados de produção ou ações reais nesta entrega.
-- Massa sintética e vínculos preparados antes do fluxo; nenhum registro de controle é alterado.
-- A autorização é verificada por operação, não inferida do acesso à listagem.
-- Tratar as decisões em aberto abaixo antes de aprovar as etapas dependentes.
+# Ele seleciona a opção "Salvar". [A2]
 
-DADOS DE TESTE
-Nome Marca Estudo Cancelamento; tipo de identificação internacional; ID Internacional ID-ESTUDO-A (formato depende de definição da fonte); Situação Ativo (CA #24553); e-mail suporte@example.invalid; site e telefone vazios. Nenhum CNPJ real é usado. Para exclusão com vínculos, preparar Modelo Estudo A associado à marca após a edição.
-Os nomes e valores são fictícios e servem apenas de exemplo de entrada. Não constituem
-novos limites, domínios, permissões ou regras de negócio.
+# O sistema verifica os dados [RN1] e confirma a inclusão do fabricante.
 
-[FP] FLUXO PRINCIPAL — CRUD COMPLETO
-1. CRIAR. Cadastrar Marca Estudo Cancelamento, com documento e situação previamente
-   validados para a massa. Informar suporte@example.invalid. Esperado: inclusão
-   confirmada e um fabricante disponível (CA-2.1.4.1.1.01, .02 e .03).
-2. CONSULTAR. Buscar pelo nome e abrir o detalhe; conferir identificação e contato
-   (CA-2.1.4.1.2.01 e .09).
-3. ATUALIZAR. Trocar o e-mail para sem-arroba e tentar salvar: recusa, sem confirmar
-   o contato inválido (CA-2.1.4.1.3.05). Corrigir para novo@example.invalid e cancelar:
-   a mudança não é confirmada (CA-2.1.4.1.3.04). Reabrir, informar o mesmo contato
-   válido e desta vez salvar. Esperado: contato atualizado no mesmo fabricante,
-   mensagem de sucesso e auditoria (CA-2.1.4.1.3.02, .03 e .11).
-4. EXCLUIR. Usar variante com modelo ou equipamento vinculado ao fabricante.
-   Solicitar exclusão e cancelar a confirmação: fabricante continua disponível.
-   Solicitar novamente, conferir o nome e confirmar como administrador. Esperado:
-   inativação com referências preservadas (CA-2.1.4.1.4.01, .02, .03 e .04).
-5. CONSULTAR APÓS EXCLUSÃO. Conferir situação Inativa e identificação do fabricante
-   nos cadastros vinculados. Não declarar exclusão definitiva.
+# O ator executa [A1], abre o detalhe e confere identificação e contato.
 
-[A] FLUXOS ALTERNATIVOS
-1. Nome já usado. Tentar nova marca com nome já cadastrado. Esperado: não criar duplicidade. A variante com cadastro anterior excluído fica BLOQUEADA até validação da extensão dessa regra. Referência: CA-2.1.4.1.1.06.
-2. E-mail inválido. Informar um e-mail de suporte sem formato válido na edição e salvar. Esperado: recusa da atualização. O texto exato da mensagem não é inventado. Referência: CA-2.1.4.1.3.05.
-3. Cancelar edição. Alterar nome e cancelar. Esperado: a alteração digitada não é confirmada. Referência: CA-2.1.4.1.3.04.
+# O ator seleciona o fabricante e clica no botão para editar.
 
-[A-COM] CONCORRÊNCIA E INTERRUPÇÃO
-Se outra pessoa alterar o cadastro durante o fluxo, ou ocorrer perda de resposta,
-registrar o ponto interrompido e a dúvida. Não escolher prevalência, prazo, repetição
-automática ou recuperação que não esteja definida. Os resultados dessas variantes
-permanecem pendentes de especificação; não são cenários aprovados.
+# O sistema exibe a página de edição com os campos preenchidos.
 
-REGRAS DE NEGÓCIO E ORÁCULO
-- Os resultados originais vêm dos CAs relacionados; os acréscimos estão explicitamente sujeitos à validação indicada acima.
-- O cadastro em uma operação não concede autorização para as operações seguintes.
-- Cancelamento e bloqueio não devem ser descritos como conclusão bem-sucedida.
-- O comportamento específico de exclusão do grupo não é generalizado a outro grupo.
+# O ator troca o e-mail para 'sem-arroba' e seleciona "Salvar".
 
-RESULTADOS ESPERADOS E REGISTRO FUTURO
-- Comparar entrada, consulta inicial, consulta após edição e resultado da exclusão.
-- Em futura execução, anotar versão, data, massa, passo, esperado, observado e evidência.
-- Nesta entrega: nenhum resultado observado; nenhum teste executado; sem homologação.
-- Se uma pendência impedir decidir entre aceitar e recusar, marcar BLOQUEADO,
-  identificar a decisão necessária e não converter o caso em sucesso.
+# O sistema recusa a atualização e não grava o contato inválido. [RN2]
 
-PENDÊNCIAS PARA STAKEHOLDERS
-Formato e validação de identificação internacional, meio de comprovar a exclusão física sem vínculos exigida pela US #24600, recuperação após timeout e apresentação amigável de limites. Não omitir documento/situação só porque contatos são opcionais.
-"""
+# O ator corrige o e-mail para 'novo@example.invalid' e seleciona
+# 'Cancelar'.
+
+# O sistema não grava a alteração. [RN3]
+
+# O ator abre a edição de novo, informa 'novo@example.invalid' e
+# seleciona "Salvar".
+
+# O sistema salva o novo contato no mesmo fabricante, exibe mensagem de
+# sucesso e registra a alteração na auditoria. [RN5]
+
+# O fabricante tem um modelo ou equipamento vinculado. O ator, como
+# administrador, executa [A1], seleciona o fabricante e a opção 'Excluir'.
+
+# O sistema pede a confirmação. O ator cancela e o fabricante continua
+# disponível. [RN3]
+
+# O ator seleciona 'Excluir' de novo, confere o nome e confirma.
+
+# O sistema inativa o fabricante e preserva as referências. [RN4]
+
+# O ator executa [A1] e verifica que o fabricante aparece como 'Inativo'
+# e continua identificado nos cadastros vinculados.
+
+
+# 🟠 [A1] - BUSCAR FABRICANTE
+# ---------------------------------------------------------------
+
+# O ator acessa a página de consulta de marcas.
+
+# O sistema exibe a lista de marcas cadastradas.
+
+# O ator digita 'Marca Estudo Cancelamento' no campo de busca e seleciona
+# 'Pesquisar'.
+
+# O sistema exibe as marcas que correspondem ao termo digitado.
+
+
+# 🟠 [A2] - NOME JÁ USADO
+# ---------------------------------------------------------------
+
+# O ator tenta cadastrar outra marca com um nome já cadastrado e
+# seleciona "Salvar".
+
+# O sistema impede o cadastro duplicado (CA #24556).
+
+
+# 🟣 [RN1] VALIDAÇÃO DOS CAMPOS
+# ---------------------------------------------------------------
+
+# Nome, identificação internacional e situação são obrigatórios; site e
+# telefone são opcionais. A situação aceita Ativo ou Inativo (CA #24553).
+
+# 🟣 [RN2] E-MAIL DE SUPORTE
+# ---------------------------------------------------------------
+
+# O e-mail de suporte precisa ter formato válido (CA-2.1.4.1.3.05).
+
+# 🟣 [RN3] CANCELAMENTO
+# ---------------------------------------------------------------
+
+# Cancelar a edição não grava a alteração digitada (CA-2.1.4.1.3.04).
+# Cancelar a confirmação de exclusão mantém o fabricante disponível.
+
+# 🟣 [RN4] EXCLUSÃO COM VÍNCULO
+# ---------------------------------------------------------------
+
+# Somente administradores podem excluir marcas (CA #24595). Com vínculos,
+# o fabricante é inativado e as referências são preservadas; a exclusão
+# não é definitiva (US #24600).
+
+# 🟣 [RN5] AUDITORIA
+# ---------------------------------------------------------------
+
+# A alteração confirmada é registrada na auditoria (CA-2.1.4.1.3.11).
+
+
+# Pendências de validação: docs/pendencias.md (UCS004).
+# Especificação completa: docs/fluxos/UCS004_crud_variacao.md.

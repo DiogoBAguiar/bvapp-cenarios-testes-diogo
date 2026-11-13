@@ -2,6 +2,8 @@
 
 Revisão documental de 06/11/2026, base `5f3072939bb7ce5f90b64bf0faa5483bbb0d3260`. Nenhum cenário foi executado. Publicação no backlog não comprova aceite. Os números UCS identificam cenários, não requisitos.
 
+Os rótulos FPn e An abaixo seguem a numeração dos passos da especificação completa de cada cenário em [docs/fluxos](fluxos.md). Os `.py` usam o formato narrativo do exemplo do professor, com `[A1]`, `[RN1]` etc.; essa numeração não corresponde aos rótulos FPn/An desta página.
+
 ## UCS001
 
 Autorização: #24431 exige usuário logado e autorizado; #24439 restringe a consulta e #24473 exige Administrador/Gerente na exclusão. A matriz por operação e a separação entre listagem e detalhe permanecem pendentes. FP1: unidade/obrigatoriedade da garantia e condições dos vínculos precisam de validação. A1: bloqueio por painel vinculado é acréscimo levantado no sistema; sua aprovação e a precedência diante de histórico permanecem pendentes. #24416 define série única entre inversores; ampliar para outros tipos ou excluídos exige validação. FP2: campos adicionais do detalhe também dependem da validação dos acréscimos. Os demais resultados originais continuam rastreados, sem alegar homologação.

@@ -1,74 +1,160 @@
-"""
-UCS001 — Manter inversores
+'''
+UCS001 - Manter inversores
 
-Autoria / responsável acadêmico: Diogo Bruno Ferreira Martins de Aguiar
-Preparação: assistência de IA; revisão pessoal e apresentação pelo responsável pendentes.
-Revisão documental: 06/11/2026. Criação: 05/11/2026
-Natureza: especificação documental, não teste automatizado nem evidência de execução.
-Revisão-base: 5f3072939bb7ce5f90b64bf0faa5483bbb0d3260
-Grupo de requisitos: Gestão de Inversores (a numeração da fonte é preservada).
+Objetivo: Permitir que o usuário cadastre, consulte, altere e exclua inversores.
 
-OBJETIVO
-Descrever o ciclo completo de criar, consultar, atualizar e excluir inversores,
-sem dividir as quatro operações em quatro cenários contados separadamente.
+Requisitos:
+- #24233 - Inclusão de inversores
+- #24249 - Consulta de inversores
+- #24253 - Atualização de inversores
+- #24254 - Exclusão de inversores
 
-REQUISITOS RELACIONADOS
-Features do OpenProject: #24233 (Inclusão), #24249 (Consulta), #24253 (Atualização) e #24254 (Exclusão).
-Referências locais da consolidação (não são IDs do OpenProject): CA-2.1.1.1.01, CA-2.1.1.1.02, CA-2.1.1.1.03, CA-2.1.1.1.04, CA-2.1.1.1.07, CA-2.1.1.1.10, CA-2.1.1.1.12, CA-2.1.1.1.17, CA-2.1.1.2.01, CA-2.1.1.2.08, CA-2.1.1.3.02, CA-2.1.1.3.04, CA-2.1.1.3.14, CA-2.1.1.4.01, CA-2.1.1.4.02, CA-2.1.1.4.03, CA-2.1.1.4.04, CA-2.1.1.4.06, CA-2.1.1.4.07.
+Ator:
+- Usuário autenticado com autorização de inclusão, consulta e edição
+- Administrador ou Gerente (exclusão)
+'''
 
-SITUAÇÃO DAS REGRAS E BLOQUEIOS
-Autorização: #24431 exige usuário logado e autorizado; #24439 restringe a consulta e #24473 exige Administrador/Gerente na exclusão. A matriz por operação e a separação entre listagem e detalhe permanecem pendentes. FP1: unidade/obrigatoriedade da garantia e condições dos vínculos precisam de validação. A1: bloqueio por painel vinculado é acréscimo levantado no sistema; sua aprovação e a precedência diante de histórico permanecem pendentes. #24416 define série única entre inversores; ampliar para outros tipos ou excluídos exige validação. FP2: campos adicionais do detalhe também dependem da validação dos acréscimos. Os demais resultados originais continuam rastreados, sem alegar homologação.
-Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
+# 🟢 [FP] - FLUXO PRINCIPAL
+# ---------------------------------------------------------------
 
-ATOR
-Usuário autenticado com autorização de inclusão, listagem, visualização e edição; na exclusão, Administrador ou Gerente conforme a fonte. A equivalência dos perfis permanece pendente.
+# O ator acessa a página de cadastro de inversores. Ele observa que
+# existem os campos:
+# - Número de série
+# - Marca
+# - Modelo (pertencente à marca selecionada)
+# - Fornecedor
+# - Usina
+# - Operadora
+# - Potência nominal
+# - Data de instalação
+# - Situação
+# - Garantia de instalação
+# - Opções
+# -- Botão "Salvar"
 
-PRÉ-CONDIÇÕES
-- Ambiente futuro de estudo isolado, sem dados de produção ou ações reais nesta entrega.
-- Massa sintética e vínculos preparados antes do fluxo; nenhum registro de controle é alterado.
-- A autorização é verificada por operação, não inferida do acesso à listagem.
-- Tratar as decisões em aberto abaixo antes de aprovar as etapas dependentes.
+# O ator preenche os campos com os dados do inversor: série
+# 'INV-ESTUDO-001', marca 'Marca Estudo A', modelo 'Modelo Estudo A',
+# fornecedor 'Fornecedor Estudo A', usina 'Usina Estudo A', operadora
+# 'Operadora Estudo A', potência de 5 kW, instalação em 01/10/2026 e
+# situação 'Ativo'. Todos os vínculos já estão cadastrados e ativos.
 
-DADOS DE TESTE
-Número de Série INV-ESTUDO-001; Marca Marca Estudo A; Modelo Modelo Estudo A pertencente à Marca; Fornecedor Fornecedor Estudo A; Usina Usina Estudo A; Operadora Operadora Estudo A; Potência Nominal 5 kW; Instalação 01/10/2026; Situação Ativo. Todos os vínculos são referências sintéticas previamente cadastradas e ativas. Garantia de instalação: valor e unidade dependem da pendência indicada abaixo; não usar um número arbitrário como regra aprovada.
-Os nomes e valores são fictícios e servem apenas de exemplo de entrada. Não constituem
-novos limites, domínios, permissões ou regras de negócio.
+# Ao concluir o cadastro, ele seleciona a opção "Salvar". [A4]
 
-[FP] FLUXO PRINCIPAL — CRUD COMPLETO
-1. CRIAR. Preencher os dados obrigatórios, selecionar o Modelo da Marca e a Usina/Operadora existentes. Resolver a garantia de instalação antes de concluir a configuração da massa. Salvar uma vez. Esperado: o inversor é criado e aparece a mensagem «Inversor cadastrado com sucesso e vinculado à Operadora e Localização selecionadas».
-2. CONSULTAR. Buscar INV-ESTUDO-001 na consulta, abrir a linha correspondente e confrontar série, marca, modelo, potência, instalação e situação com os dados cadastrados.
-3. ATUALIZAR. Abrir a edição do mesmo inversor, conferir que a série não pode ser alterada e mudar a potência de 5 para 6 kW. Salvar e reabrir a consulta. Esperado: a mesma identificação exibe 6 kW e a mensagem «Dados do inversor atualizados com sucesso».
-4. CONSULTAR APÓS ATUALIZAÇÃO. Reabrir a consulta e verificar a mesma identificação,
-   os valores alterados e a preservação dos demais valores do cadastro.
-5. EXCLUIR. Usar a variante sem painéis vinculados, sem histórico de geração/manutenção e sem associações impeditivas. Solicitar exclusão; conferir série e marca na confirmação; confirmar. Esperado: remoção definitiva do registro, não apenas troca de situação, e mensagem «Inversor removido/inativado com sucesso». A demonstração de remoção definitiva precisa de meio observável acordado; ausência na lista isoladamente não a prova.
-6. CONSULTAR APÓS EXCLUSÃO. Conferir o resultado específico exigido no passo 5:
-   remoção, inativação com vínculos preservados ou etapa bloqueada. Não usar ausência
-   na listagem como prova suficiente de eliminação física.
+# O sistema verifica que os dados estão corretos [RN1] e exibe a mensagem
+# "Inversor cadastrado com sucesso e vinculado à Operadora e Localização
+# selecionadas".
 
-[A] FLUXOS ALTERNATIVOS
-1. Painel vinculado. Preparar variante com painel associado e solicitar exclusão. Esperado: recusa, informação do impedimento e inversor preservado. Referência: CA-2.1.1.4.02.
-2. Histórico existente. Sem painel associado, mas com histórico de geração/manutenção: a operação de exclusão deve inativar e preservar o histórico, em vez de remover definitivamente. Referência: CA-2.1.1.4.03.
-3. Série repetida. Tentar cadastrar uma segunda referência com INV-ESTUDO-001. Esperado: impedir duplicidade e informar o problema; não criar outro inversor. Referência: CA-2.1.1.1.04.
+# O ator executa [A1].
 
-[A-COM] CONCORRÊNCIA E INTERRUPÇÃO
-Se outra pessoa alterar o cadastro durante o fluxo, ou ocorrer perda de resposta,
-registrar o ponto interrompido e a dúvida. Não escolher prevalência, prazo, repetição
-automática ou recuperação que não esteja definida. Os resultados dessas variantes
-permanecem pendentes de especificação; não são cenários aprovados.
+# O ator verifica que o inversor cadastrado está na lista e que série,
+# marca, modelo, potência, instalação e situação são iguais aos dados
+# informados. [A2][A3]
 
-REGRAS DE NEGÓCIO E ORÁCULO
-- Os resultados originais vêm dos CAs relacionados; os acréscimos estão explicitamente sujeitos à validação indicada acima.
-- O cadastro em uma operação não concede autorização para as operações seguintes.
-- Cancelamento e bloqueio não devem ser descritos como conclusão bem-sucedida.
-- O comportamento específico de exclusão do grupo não é generalizado a outro grupo.
 
-RESULTADOS ESPERADOS E REGISTRO FUTURO
-- Comparar entrada, consulta inicial, consulta após edição e resultado da exclusão.
-- Em futura execução, anotar versão, data, massa, passo, esperado, observado e evidência.
-- Nesta entrega: nenhum resultado observado; nenhum teste executado; sem homologação.
-- Se uma pendência impedir decidir entre aceitar e recusar, marcar BLOQUEADO,
-  identificar a decisão necessária e não converter o caso em sucesso.
+# 🟠 [A1] - BUSCAR INVERSOR
+# ---------------------------------------------------------------
 
-PENDÊNCIAS PARA STAKEHOLDERS
-Unidade da garantia e conciliação da garantia de instalação obrigatória; equivalência dos perfis Administrador/Gerente; identificação de histórico; forma de comprovar remoção definitiva; concorrência e perda de resposta. O fluxo CRUD está descrito por completo, mas as etapas que dependem dessas definições não recebem aprovação presumida.
-"""
+# O ator acessa a página de consulta de inversores.
+
+# O sistema exibe a lista de inversores cadastrados.
+
+# O ator digita a série 'INV-ESTUDO-001' no campo de busca e seleciona
+# 'Pesquisar'.
+
+# O sistema exibe os inversores que correspondem ao termo digitado.
+
+
+# 🟠 [A2] - EDITAR INVERSOR
+# ---------------------------------------------------------------
+
+# O ator executa [A1].
+
+# O ator seleciona o inversor na lista e clica no botão para editar.
+
+# O sistema exibe a página de edição com os campos preenchidos com os
+# dados do inversor. O ator verifica que o número de série não pode
+# ser alterado. [RN2]
+
+# O ator altera a potência de 5 kW para 6 kW e seleciona "Salvar".
+
+# O sistema salva os dados e exibe a mensagem "Dados do inversor
+# atualizados com sucesso".
+
+# O ator executa [A1] e verifica que o mesmo inversor exibe 6 kW e que
+# os demais dados continuam iguais.
+
+
+# 🟠 [A3] - EXCLUIR INVERSOR
+# ---------------------------------------------------------------
+
+# O ator executa [A1]. O inversor não tem painéis vinculados nem
+# histórico de geração ou manutenção.
+
+# O ator seleciona o inversor e a opção 'Excluir'. [A5][A6]
+
+# O sistema pede a confirmação da exclusão, exibindo série e marca.
+
+# O ator confirma a exclusão.
+
+# O sistema remove o inversor definitivamente [RN3] e exibe a mensagem
+# "Inversor removido/inativado com sucesso".
+
+# O ator executa [A1] e verifica que o inversor não está na lista.
+# A remoção definitiva é conferida pelo meio acordado com os
+# stakeholders; a ausência na lista, sozinha, não a comprova.
+
+
+# 🟠 [A4] - SÉRIE REPETIDA
+# ---------------------------------------------------------------
+
+# O ator tenta cadastrar um segundo inversor com a série
+# 'INV-ESTUDO-001' e seleciona "Salvar".
+
+# O sistema impede o cadastro, informa que a série já existe [RN1] e
+# não cria outro inversor.
+
+
+# 🟠 [A5] - EXCLUIR INVERSOR COM PAINEL VINCULADO
+# ---------------------------------------------------------------
+
+# O ator executa [A1] para um inversor que tem painel vinculado e
+# seleciona 'Excluir'.
+
+# O sistema recusa a exclusão, informa o impedimento [RN3] e o inversor
+# continua cadastrado.
+
+
+# 🟠 [A6] - EXCLUIR INVERSOR COM HISTÓRICO
+# ---------------------------------------------------------------
+
+# O ator executa [A1] para um inversor sem painel vinculado, mas com
+# histórico de geração ou manutenção, seleciona 'Excluir' e confirma.
+
+# O sistema inativa o inversor em vez de removê-lo e preserva o
+# histórico. [RN3]
+
+
+# 🟣 [RN1] VALIDAÇÃO DOS CAMPOS
+# ---------------------------------------------------------------
+
+# Os dados obrigatórios precisam ser informados e o número de série
+# deve ser único entre os inversores (CA #24416). A unidade e a
+# obrigatoriedade da garantia de instalação estão pendentes.
+
+# 🟣 [RN2] SÉRIE NÃO EDITÁVEL
+# ---------------------------------------------------------------
+
+# Na edição, o número de série é somente leitura (CA-2.1.1.3.02).
+
+# 🟣 [RN3] REGRAS DE EXCLUSÃO
+# ---------------------------------------------------------------
+
+# Somente Administrador ou Gerente pode excluir (CA #24473). Sem painéis
+# e sem histórico, o inversor é removido definitivamente (CA-2.1.1.4.01).
+# Com painel vinculado, a exclusão é recusada (CA-2.1.1.4.02, a validar).
+# Com histórico, o inversor é inativado e o histórico é preservado
+# (CA-2.1.1.4.03).
+
+
+# Pendências de validação: docs/pendencias.md (UCS001).
+# Especificação completa: docs/fluxos/UCS001_manter_inversores.md.
