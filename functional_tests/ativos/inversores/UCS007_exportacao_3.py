@@ -1,83 +1,115 @@
-"""
-UCS007 — Tratar autorização e falha de exportação de inversores
+'''
+UCS007 - Tratar autorização e falha de exportação de inversores
 
-Autoria / responsável acadêmico: Diogo Bruno Ferreira Martins de Aguiar
-Preparação assistida por IA; revisão humana e apresentação pendentes.
-Revisão documental: 06/11/2026. Criação: 05/11/2026. Revisão-base: 5f3072939bb7ce5f90b64bf0faa5483bbb0d3260
-Natureza: cenário documental; não é teste automatizado; não executado.
+Objetivo: Garantir que a exportação de inversores seja recusada para
+quem não tem a autorização correspondente, mostre o andamento e informe
+falhas sem entregar conteúdo de erro como relatório.
 
-OBJETIVO
-Conferir recusa por autorização em cada modalidade, estado de andamento e resposta de falha sem entregar erro como relatório.
-É um fluxo de relatório, sem operações CRUD divididas para aumentar a contagem.
+Requisitos:
+- #35875 - Exportação de inversores
+- #24249 - Consulta de inversores (CA #24439)
+- US #24457
 
-REQUISITOS RELACIONADOS
-Grupo: Gestão de Inversores.
-Feature #35875 — Exportação de inversores. Relacionadas: Consulta #24249 e US #24457.
-Tópicos da consolidação local (mapeamento revisado em docs/matriz-rastreabilidade.md): Autorização; Falha na obtenção do arquivo; Exportação em andamento.
-Critério Autorização (CA consolidado da Feature): a exportação coletiva exige autorização para consultar
-a listagem; a exportação individual exige autorização para visualizar o registro; uma solicitação sem a
-autorização correspondente deve ser recusada.
-Para inversores, a exigência de autorização de visualização para a exportação individual também
-consta do CA original #24439 (CA-2.1.1.2.01).
+Ator:
+- Perfil A: pode consultar a listagem e visualizar o registro
+- Perfil B: não pode consultar a listagem
+- Perfil C: pode consultar a listagem, mas não visualizar o registro
+'''
 
-SITUAÇÃO DAS REGRAS E BLOQUEIOS
-FP2 e FP3: a recusa vem do critério Autorização do CA consolidado da Feature e do cenário
-"Usuário sem autorização" da US de origem #24457: exportação recusada e nenhum relatório entregue.
-Esse critério ainda não aparece entre os CA01–CA07 publicados na Feature #35875; registrá-lo na publicação é pendência de registro, não de definição da regra.
-FP1, FP4 e FP5: andamento e falha constam dos novos CA05/CA06 da Feature #35875; expectativas propostas, pendentes de validação. FP6: retomada e tentativas continuam sem definição.
-Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
+# 🟢 [FP] - FLUXO PRINCIPAL
+# ---------------------------------------------------------------
 
-ATOR
-Perfis sintéticos para esta análise, não novos papéis do produto:
-- Perfil A: autorização para consultar a listagem e para visualizar o registro.
-- Perfil B: sem autorização para consultar a listagem.
-- Perfil C: autorização para consultar a listagem, sem autorização para visualizar o registro.
+# Existe o inversor fictício 'ESTUDO-INVERSORES-01'. Os perfis A, B e C
+# são sintéticos para este teste, não papéis novos do produto.
 
-PRÉ-CONDIÇÕES
-Ambiente futuro isolado e massa sintética já preparada. Nenhuma criação de cadastro
-ocorre neste cenário de exportação. Na execução futura, preservar os controles.
-As definições pendentes são resolvidas antes de aprovar a etapa dependente.
+# Com o Perfil A, o ator acessa a consulta de inversores, aplica um filtro
+# e seleciona a exportação coletiva. [A1][A3]
 
-DADOS DE TESTE
-Alvo ESTUDO-INVERSORES-01 existente e consulta filtrada com dados fictícios.
-Uma condição controlada de falha de obtenção deve ser preparada para futura execução.
-Todos os dados são fictícios; não constituem limites ou regras novas.
+# Enquanto o arquivo é preparado, o sistema indica que a exportação está
+# em andamento e impede um novo acionamento da mesma ação. [RN3]
 
-[FP] FLUXO PRINCIPAL
-1. CONTROLE. Com o Perfil A, solicitar a exportação coletiva e a ficha individual de ESTUDO-INVERSORES-01;
-   anotar o endereço e a solicitação usados. Durante a preparação, verificar indicação de
-   andamento e controle da ação indisponível para novo acionamento.
-2. SEM CONSULTA. Com o Perfil B, solicitar a exportação coletiva, inclusive diretamente pelo
-   endereço anotado no passo 1, sem usar os controles da tela.
-   Esperado: exportação recusada e nenhum relatório entregue.
-3. SEM VISUALIZAÇÃO. Com o Perfil C, solicitar a ficha individual de ESTUDO-INVERSORES-01, inclusive
-   diretamente pelo endereço anotado no passo 1.
-   Esperado: exportação recusada e nenhuma ficha entregue.
-4. Preparar a variante de falha controlada de obtenção e, com o Perfil A, solicitar exportação.
-   Esperado: falha informada; conteúdo de erro não é entregue como relatório.
-5. Repetir a variante de falha para a ficha individual, mantendo alvo existente.
-   Esperado: falha informada; nenhum relatório de erro apresentado como ficha.
-6. Registrar o que foi possível observar; retorno do controle, número de tentativas
-   e retomada após resposta desconhecida permanecem sem contrato aprovado.
+# O sistema entrega o arquivo. O ator anota o endereço e a solicitação
+# usados.
 
-[A] FLUXOS ALTERNATIVOS
-1. Pela interface. Registrar se as opções de exportação aparecem para os Perfis B e C. Os critérios não
-   determinam ocultar a opção; ocultá-la não substitui a recusa verificada nos passos 2 e 3.
-2. Perda de resposta ou concorrência: resultado pendente; não presumir repetição automática nem reutilização do arquivo.
+# O ator seleciona 'ESTUDO-INVERSORES-01' e a exportação da ficha
+# individual. [A2][A4]
 
-REGRAS DE NEGÓCIO
-Cada modalidade exige sua própria autorização: consultar a listagem não autoriza a ficha individual
-sem a autorização de visualização. Formato, conjunto, identidade e entrega são verificações distintas.
-A implementação não define o resultado esperado.
-Não definir mensagens literais, códigos de resposta, prazos, novas tentativas ou campos não especificados.
+# O sistema entrega a ficha. O ator anota o endereço e a solicitação
+# usados. [A5]
 
-RESULTADOS ESPERADOS
-Os resultados aparecem junto a cada ação para permitir comparação passo a passo.
-Qualquer arquivo entregue nos passos 2 e 3 é defeito de controle de acesso.
-Nenhum arquivo foi gerado ou cenário executado. Em futura execução registrar
-versão, data, perfil, massa, esperado, observado e evidência, sem declarar sucesso antecipado.
 
-PENDÊNCIAS
-Consultar também SITUAÇÃO DAS REGRAS E BLOQUEIOS acima.
-Forma de apresentar a recusa. Campos completos de PDF coletivo e individual, unidades e apresentação de dados ausentes precisam de decisão. O conteúdo CSV descrito não autoriza presumir igualdade dos demais formatos. Definir consulta vazia, fotografia temporal do inventário e recuperação após perda de resposta.
-"""
+# 🟠 [A1] - EXPORTAÇÃO COLETIVA SEM AUTORIZAÇÃO DE CONSULTA
+# ---------------------------------------------------------------
+
+# Com o Perfil B, o ator abre diretamente o endereço anotado para a
+# exportação coletiva, sem usar os controles da tela.
+
+# O sistema recusa a exportação e não entrega nenhum relatório. [RN1][RN2]
+
+
+# 🟠 [A2] - FICHA SEM AUTORIZAÇÃO DE VISUALIZAÇÃO
+# ---------------------------------------------------------------
+
+# Com o Perfil C, o ator abre diretamente o endereço anotado para a ficha
+# de 'ESTUDO-INVERSORES-01'.
+
+# O sistema recusa a exportação e não entrega nenhuma ficha. [RN1][RN2]
+
+
+# 🟠 [A3] - FALHA NA EXPORTAÇÃO COLETIVA
+# ---------------------------------------------------------------
+
+# Com uma falha de obtenção preparada, o ator, com o Perfil A, solicita
+# a exportação coletiva.
+
+# O sistema informa a falha e não entrega o conteúdo do erro como
+# relatório. [RN4]
+
+
+# 🟠 [A4] - FALHA NA FICHA INDIVIDUAL
+# ---------------------------------------------------------------
+
+# Com a mesma falha preparada e o inversor existente, o ator solicita a
+# ficha individual.
+
+# O sistema informa a falha e não apresenta o erro como ficha. [RN4]
+
+
+# 🟠 [A5] - OPÇÕES NA INTERFACE
+# ---------------------------------------------------------------
+
+# Com os Perfis B e C, o ator abre a consulta e registra se as opções de
+# exportação aparecem. Esconder a opção não substitui a recusa
+# verificada em [A1] e [A2].
+
+
+# 🟣 [RN1] AUTORIZAÇÃO POR MODALIDADE
+# ---------------------------------------------------------------
+
+# A exportação coletiva exige autorização para consultar a listagem; a
+# ficha individual exige autorização para visualizar o registro
+# (CA #24439). Consultar a listagem não autoriza a ficha.
+
+# 🟣 [RN2] RECUSA SEM ARQUIVO
+# ---------------------------------------------------------------
+
+# Uma solicitação sem a autorização correspondente é recusada e nenhum
+# arquivo é entregue. Qualquer arquivo entregue em [A1] ou [A2] é defeito
+# de controle de acesso.
+
+# 🟣 [RN3] EXPORTAÇÃO EM ANDAMENTO
+# ---------------------------------------------------------------
+
+# Durante a preparação, o sistema indica o andamento e não aceita um
+# novo acionamento (CA05 da Feature #35875, a validar).
+
+# 🟣 [RN4] FALHA NA OBTENÇÃO
+# ---------------------------------------------------------------
+
+# Em caso de falha, o sistema informa o problema e não entrega o erro
+# como relatório (CA06 da Feature #35875, a validar). Nova tentativa e
+# retomada ainda não estão definidas.
+
+
+# Pendências de validação: docs/pendencias.md (UCS007).
+# Especificação completa: docs/fluxos/UCS007_exportacao_3.md.

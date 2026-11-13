@@ -1,6 +1,6 @@
 # UCS011 — Recusar edição e exclusão por acesso direto sem permissão
 
-[Índice de fluxos](../fluxos.md) · [README](../../README.md) · [Cenário original](../../functional_tests/ativos/UCS011_acesso_direto_sem_permissao.py)
+[Índice de fluxos](../fluxos.md) · [README](../../README.md) · [Cenário no formato do professor (.py)](../../functional_tests/ativos/UCS011_acesso_direto_sem_permissao.py)
 
 Os losangos representam a avaliação da etapa no cenário, não novos controles da interface. Neste cenário negativo, a **recusa é o resultado esperado**: uma gravação aceita é defeito de controle de acesso, mesmo que a interface esconda a opção. As recusas vêm diretamente dos critérios citados; a forma da recusa (mensagem, código, redirecionamento) não é exigida.
 

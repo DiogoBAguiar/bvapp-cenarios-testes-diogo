@@ -1,74 +1,157 @@
-"""
-UCS002 — Manter marcas
+'''
+UCS002 - Manter marcas
 
-Autoria / responsável acadêmico: Diogo Bruno Ferreira Martins de Aguiar
-Preparação: assistência de IA; revisão pessoal e apresentação pelo responsável pendentes.
-Revisão documental: 06/11/2026. Criação: 05/11/2026
-Natureza: especificação documental, não teste automatizado nem evidência de execução.
-Revisão-base: 5f3072939bb7ce5f90b64bf0faa5483bbb0d3260
-Grupo de requisitos: Cadastro de Marcas (Fabricantes) (a numeração da fonte é preservada).
+Objetivo: Permitir que o usuário cadastre, consulte, altere e exclua
+marcas (fabricantes).
 
-OBJETIVO
-Descrever o ciclo completo de criar, consultar, atualizar e excluir marcas,
-sem dividir as quatro operações em quatro cenários contados separadamente.
+Requisitos:
+- #24272 - Inclusão de marcas
+- #24273 - Consulta de marcas
+- #24275 - Atualização de marcas
+- #24278 - Exclusão de marcas
 
-REQUISITOS RELACIONADOS
-Features do OpenProject: #24272 (Inclusão), #24273 (Consulta), #24275 (Atualização) e #24278 (Exclusão).
-Referências locais da consolidação (não são IDs do OpenProject): CA-2.1.4.1.1.01, CA-2.1.4.1.1.02, CA-2.1.4.1.1.03, CA-2.1.4.1.1.05, CA-2.1.4.1.1.06, CA-2.1.4.1.1.11, CA-2.1.4.1.2.01, CA-2.1.4.1.2.04, CA-2.1.4.1.2.09, CA-2.1.4.1.3.02, CA-2.1.4.1.3.03, CA-2.1.4.1.3.04, CA-2.1.4.1.3.05, CA-2.1.4.1.3.11, CA-2.1.4.1.4.01, CA-2.1.4.1.4.02, CA-2.1.4.1.4.03, CA-2.1.4.1.4.04, CA-2.1.4.1.4.07.
+Ator:
+- Usuário com autorização para adicionar, consultar e editar marcas
+- Administrador (exclusão)
+'''
 
-SITUAÇÃO DAS REGRAS E BLOQUEIOS
-FP1: formato de ID internacional continua indefinido. O domínio Ativo/Inativo já consta do CA #24553; não é uma regra ausente. FP2: detalhes de contatos e texto “Não informado” são acréscimos a validar. FP3 e alternativas: validação de e-mail e cancelamento foram detalhados na revisão, sem evidência de aceite dos stakeholders. A1: #24556 proíbe nomes duplicados; estender a registros excluídos depende de validação. Autorizações: #24571 exige permissão de cadastro, #24584 restringe consulta, #24594 exige edição e #24595 reserva exclusão a Administradores; a matriz e a separação listagem/detalhe não estão definidas. Sem vínculos, a US #24600 já exige exclusão física; falta acordar como comprová-la, não decidir se a regra existe.
-Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
+# 🟢 [FP] - FLUXO PRINCIPAL
+# ---------------------------------------------------------------
 
-ATOR
-Usuário com autorização para adicionar fabricantes, listar, visualizar e editar marcas; administrador para remover marcas.
+# O ator acessa a página de cadastro de marcas. Ele observa que existem
+# os campos:
+# - Nome
+# - Tipo de identificação internacional
+# - ID internacional
+# - Situação (Ativo ou Inativo)
+# - E-mail de suporte
+# - Site oficial
+# - Telefone de suporte
+# - Opções
+# -- Botão "Salvar"
 
-PRÉ-CONDIÇÕES
-- Ambiente futuro de estudo isolado, sem dados de produção ou ações reais nesta entrega.
-- Massa sintética e vínculos preparados antes do fluxo; nenhum registro de controle é alterado.
-- A autorização é verificada por operação, não inferida do acesso à listagem.
-- Tratar as decisões em aberto abaixo antes de aprovar as etapas dependentes.
+# O ator preenche nome 'Marca Estudo A', o tipo e o ID internacional
+# 'ID-ESTUDO-A', situação 'Ativo' e e-mail 'suporte@example.invalid'.
+# Ele deixa site e telefone em branco, porque são opcionais.
 
-DADOS DE TESTE
-Nome Marca Estudo A; tipo de identificação internacional; ID Internacional ID-ESTUDO-A (formato depende de definição da fonte); Situação Ativo (CA #24553); e-mail suporte@example.invalid; site e telefone vazios. Nenhum CNPJ real é usado. Para exclusão com vínculos, preparar Modelo Estudo A associado à marca após a edição.
-Os nomes e valores são fictícios e servem apenas de exemplo de entrada. Não constituem
-novos limites, domínios, permissões ou regras de negócio.
+# Ao concluir o cadastro, ele seleciona a opção "Salvar". [A4]
 
-[FP] FLUXO PRINCIPAL — CRUD COMPLETO
-1. CRIAR. Preencher nome, documento e situação. O formato do documento internacional deve ser confirmado antes de concluir a massa; Ativo/Inativo constam do CA #24553. Manter site e telefone opcionais em branco; salvar. Esperado: «Marca cadastrada com sucesso», cadastro disponível e auditoria de inclusão.
-2. CONSULTAR. Buscar Marca Estudo A pelo nome; abrir o detalhe correto e conferir nome e e-mail. Proposta pendente de validação: contatos não informados aparecem como Não informado, sem transformar ausência em dado real.
-3. ATUALIZAR. Editar a mesma marca e mudar seu nome para Marca Estudo A Revisada, mantendo o e-mail. Salvar. Esperado: identificação preservada, novo nome na consulta e «Marca atualizada com sucesso», com registro anterior/posterior na auditoria.
-4. CONSULTAR APÓS ATUALIZAÇÃO. Reabrir a consulta e verificar a mesma identificação,
-   os valores alterados e a preservação dos demais valores do cadastro.
-5. EXCLUIR. Preparar modelo ou equipamento vinculado à marca. Como administrador, solicitar remoção, conferir o nome na confirmação e cancelar uma vez. Repetir e confirmar. Esperado: marca torna-se Inativa e continua identificável nos cadastros que a utilizam; os vínculos não são apagados. A operação de excluir desta variante é lógica, como exige a regra; não afirmar remoção definitiva.
-6. CONSULTAR APÓS EXCLUSÃO. Conferir o resultado específico exigido no passo 5:
-   remoção, inativação com vínculos preservados ou etapa bloqueada. Não usar ausência
-   na listagem como prova suficiente de eliminação física.
+# O sistema verifica que os dados estão corretos [RN1][RN2], exibe a
+# mensagem "Marca cadastrada com sucesso" e registra a inclusão na
+# auditoria. [RN5]
 
-[A] FLUXOS ALTERNATIVOS
-1. Nome já usado. Tentar nova marca com nome já cadastrado. Esperado: não criar duplicidade. A variante com cadastro anterior excluído fica BLOQUEADA até validação da extensão dessa regra. Referência: CA-2.1.4.1.1.06.
-2. E-mail inválido. Informar um e-mail de suporte sem formato válido na edição e salvar. Esperado: recusa da atualização. O texto exato da mensagem não é inventado. Referência: CA-2.1.4.1.3.05.
-3. Cancelar edição. Alterar nome e cancelar. Esperado: a alteração digitada não é confirmada. Referência: CA-2.1.4.1.3.04.
+# O ator executa [A1].
 
-[A-COM] CONCORRÊNCIA E INTERRUPÇÃO
-Se outra pessoa alterar o cadastro durante o fluxo, ou ocorrer perda de resposta,
-registrar o ponto interrompido e a dúvida. Não escolher prevalência, prazo, repetição
-automática ou recuperação que não esteja definida. Os resultados dessas variantes
-permanecem pendentes de especificação; não são cenários aprovados.
+# O ator abre o detalhe da marca e confere nome e e-mail. Os contatos
+# não informados aparecem como "Não informado" (a validar). [A2][A3]
 
-REGRAS DE NEGÓCIO E ORÁCULO
-- Os resultados originais vêm dos CAs relacionados; os acréscimos estão explicitamente sujeitos à validação indicada acima.
-- O cadastro em uma operação não concede autorização para as operações seguintes.
-- Cancelamento e bloqueio não devem ser descritos como conclusão bem-sucedida.
-- O comportamento específico de exclusão do grupo não é generalizado a outro grupo.
 
-RESULTADOS ESPERADOS E REGISTRO FUTURO
-- Comparar entrada, consulta inicial, consulta após edição e resultado da exclusão.
-- Em futura execução, anotar versão, data, massa, passo, esperado, observado e evidência.
-- Nesta entrega: nenhum resultado observado; nenhum teste executado; sem homologação.
-- Se uma pendência impedir decidir entre aceitar e recusar, marcar BLOQUEADO,
-  identificar a decisão necessária e não converter o caso em sucesso.
+# 🟠 [A1] - BUSCAR MARCA
+# ---------------------------------------------------------------
 
-PENDÊNCIAS PARA STAKEHOLDERS
-Formato e validação de identificação internacional, meio de comprovar a exclusão física sem vínculos exigida pela US #24600, recuperação após timeout e apresentação amigável de limites. Não omitir documento/situação só porque contatos são opcionais.
-"""
+# O ator acessa a página de consulta de marcas.
+
+# O sistema exibe a lista de marcas cadastradas.
+
+# O ator digita 'Marca Estudo A' no campo de busca e seleciona
+# 'Pesquisar'.
+
+# O sistema exibe as marcas que correspondem ao termo digitado.
+
+
+# 🟠 [A2] - EDITAR MARCA
+# ---------------------------------------------------------------
+
+# O ator executa [A1].
+
+# O ator seleciona a marca na lista e clica no botão para editar.
+
+# O sistema exibe a página de edição com os campos preenchidos com os
+# dados da marca.
+
+# O ator altera o nome para 'Marca Estudo A Revisada', mantém o e-mail
+# e seleciona "Salvar". [A5][A6]
+
+# O sistema salva os dados, exibe a mensagem "Marca atualizada com
+# sucesso" e registra os valores anterior e posterior na auditoria. [RN5]
+
+# O ator executa [A1] e verifica que a mesma marca aparece com o novo
+# nome e que os demais dados continuam iguais.
+
+
+# 🟠 [A3] - EXCLUIR MARCA COM VÍNCULO
+# ---------------------------------------------------------------
+
+# A marca tem um modelo ou equipamento vinculado. O ator, como
+# administrador, executa [A1], seleciona a marca e a opção 'Excluir'.
+
+# O sistema pede a confirmação, exibindo o nome da marca.
+
+# O ator cancela. O sistema mantém a marca sem alteração.
+
+# O ator seleciona 'Excluir' de novo e confirma.
+
+# O sistema torna a marca 'Inativa' e mantém os vínculos [RN4]; a marca
+# continua identificável nos cadastros que a utilizam.
+
+# O ator executa [A1] e verifica que a marca aparece como 'Inativa'.
+
+
+# 🟠 [A4] - NOME JÁ USADO
+# ---------------------------------------------------------------
+
+# O ator tenta cadastrar uma nova marca com um nome já cadastrado e
+# seleciona "Salvar".
+
+# O sistema impede o cadastro duplicado. [RN2]
+
+
+# 🟠 [A5] - E-MAIL INVÁLIDO
+# ---------------------------------------------------------------
+
+# Na edição, o ator informa um e-mail de suporte sem formato válido e
+# seleciona "Salvar".
+
+# O sistema recusa a atualização. [RN3]
+
+
+# 🟠 [A6] - CANCELAR EDIÇÃO
+# ---------------------------------------------------------------
+
+# Na edição, o ator altera o nome e seleciona 'Cancelar'.
+
+# O sistema não salva a alteração digitada (CA-2.1.4.1.3.04).
+
+
+# 🟣 [RN1] VALIDAÇÃO DOS CAMPOS
+# ---------------------------------------------------------------
+
+# Nome, identificação internacional e situação são obrigatórios; site e
+# telefone são opcionais. A situação aceita Ativo ou Inativo (CA #24553).
+# O formato do ID internacional ainda não está definido.
+
+# 🟣 [RN2] NOME ÚNICO
+# ---------------------------------------------------------------
+
+# Não pode haver duas marcas com o mesmo nome (CA #24556).
+
+# 🟣 [RN3] E-MAIL DE SUPORTE
+# ---------------------------------------------------------------
+
+# O e-mail de suporte precisa ter formato válido (CA-2.1.4.1.3.05).
+
+# 🟣 [RN4] REGRAS DE EXCLUSÃO
+# ---------------------------------------------------------------
+
+# Somente administradores podem excluir marcas (CA #24595). Com vínculos,
+# a marca é inativada e os vínculos são preservados; sem vínculos, a
+# exclusão é física (US #24600).
+
+# 🟣 [RN5] AUDITORIA
+# ---------------------------------------------------------------
+
+# Inclusão, alteração e exclusão são registradas na auditoria.
+
+
+# Pendências de validação: docs/pendencias.md (UCS002).
+# Especificação completa: docs/fluxos/UCS002_manter_marcas.md.

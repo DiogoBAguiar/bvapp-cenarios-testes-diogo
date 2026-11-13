@@ -1,69 +1,89 @@
-"""
-UCS008 — Exportar consulta filtrada de fabricantes em todos os formatos
+'''
+UCS008 - Exportar consulta filtrada de fabricantes em todos os formatos
 
-Autoria / responsável acadêmico: Diogo Bruno Ferreira Martins de Aguiar
-Preparação assistida por IA; revisão humana e apresentação pendentes.
-Revisão documental: 06/11/2026. Criação: 05/11/2026. Revisão-base: 5f3072939bb7ce5f90b64bf0faa5483bbb0d3260
-Natureza: cenário documental; não é teste automatizado; não executado.
+Objetivo: Permitir que o usuário exporte o resultado completo de uma
+consulta filtrada de fabricantes, em PDF e CSV, na mesma ordem da
+consulta.
 
-OBJETIVO
-Conferir formatos obrigatórios, filtros, abrangência além da página e ordem do arquivo coletivo.
-É um fluxo de relatório, sem operações CRUD divididas para aumentar a contagem.
+Requisitos:
+- #35912 - Exportação de fabricantes
+- #24273 - Consulta de marcas
+- US #25954
 
-REQUISITOS RELACIONADOS
-Grupo: Cadastro de Marcas (Fabricantes).
-Feature #35912 — Exportação de fabricantes. Relacionadas: Consulta #24273 e US #25954.
-Tópicos da consolidação local (mapeamento revisado em docs/matriz-rastreabilidade.md): Formatos de exportação; Resultado completo da consulta; Filtros da exportação; Dados do arquivo; Entrega do arquivo; Ordenação.
+Ator:
+- Usuário com autorização para consultar a listagem de marcas
+'''
 
-SITUAÇÃO DAS REGRAS E BLOQUEIOS
-FP1 a FP6: PDF/CSV, abrangência, filtro e ordenação constam da nova Feature #35912 e aguardam validação dos acréscimos. As colunas CSV do levantamento não estão especificadas nos nove CAs dessa Feature: confirmar composição, sem inferir equivalência com a tabela ou com o PDF. Conjunto vazio e momento dos dados continuam pendentes.
-Resultados de acréscimos a validar são expectativas propostas. Não aprovar essas etapas antes da decisão registrada dos stakeholders. IDs globais e rótulos locais são distinguidos em docs/matriz-rastreabilidade.md.
+# 🟢 [FP] - FLUXO PRINCIPAL
+# ---------------------------------------------------------------
 
-ATOR
-Pessoa usuária com autorização para consultar a listagem (exportação coletiva), conforme o critério Autorização da Feature de exportação.
-A recusa sem essa autorização é verificada no UCS010.
+# Existem 23 fabricantes fictícios 'ESTUDO-MARCAS-01' a '23' que atendem
+# ao filtro e três 'CONTROLE-01' a '03' que não atendem. A página da
+# consulta mostra dez registros.
 
-PRÉ-CONDIÇÕES
-Ambiente futuro isolado e massa sintética já preparada. Nenhuma criação de cadastro
-ocorre neste cenário de exportação. Na execução futura, preservar os controles.
-As definições pendentes são resolvidas antes de aprovar a etapa dependente.
+# O ator acessa a página de consulta de marcas. Ele observa que existe a
+# busca por fabricante.
 
-DADOS DE TESTE
-23 registros fictícios ESTUDO-MARCAS-01 a 23 que correspondem ao filtro
-e três CONTROLE-01 a 03 que não correspondem. Página de dez registros, se disponível.
-O número 23 é massa que atravessa páginas, não limite de produto. Filtros previstos:
-O conjunto exportado deve respeitar busca por fabricante. Registros que não atendam aos filtros não devem ser acrescentados ao relatório.
-Todos os dados são fictícios; não constituem limites ou regras novas.
+# O ator aplica um filtro que seleciona os 23 fabricantes de estudo e
+# confere que o total exibido é 23.
 
-[FP] FLUXO PRINCIPAL
-1. Acessar a consulta e aplicar um filtro previsto que selecione os 23 alvos,
-   excluindo os três controles. Conferir o total antes de exportar.
-2. Escolher uma ordenação suportada e solicitar cada formato obrigatório, um por vez.
-   Contrato de formatos: A exportação coletiva deve oferecer PDF e CSV. Cada arquivo entregue deve corresponder ao formato solicitado. A exportação de um registro individual é em PDF.
-3. Verificar o início do download e a informação do resultado de obtenção.
-4. Comparar identidades: os 23 alvos devem estar no arquivo, nenhum dos três controles.
-   Repetir a solicitação em outra página: o conjunto continua completo.
-5. Comparar a sequência com a ordenação da consulta, prevista para este grupo.
-6. No CSV obrigatório, conferir as colunas definidas e respectivos
-   valores: O arquivo CSV deve apresentar: Nome, Site Oficial, E-mail de Suporte e Telefone de Suporte. A verificação deve comparar os valores com os registros selecionados; campos ausentes na especificação original ou diferenças entre formatos permanecem nas pendências, sem presumir equivalência.
-7. Não aprovar conteúdo completo do PDF sem a definição ainda pendente.
-   Aprovação de conjunto/ordem não equivale à aprovação de todas as colunas.
+# O ator escolhe uma ordenação e seleciona a exportação em PDF. [A1]
 
-[A] FLUXOS ALTERNATIVOS
-1. PDF ou CSV ausente: registrar não atendimento; os dois formatos são obrigatórios.
-2. Consulta vazia: comportamento pendente; não presumir arquivo vazio ou ausência de download.
+# O sistema inicia o download e informa o resultado da obtenção do
+# arquivo.
 
-REGRAS DE NEGÓCIO
-Cada resultado proposto está sujeito à situação da regra indicada acima. Formato, conjunto, identidade e
-entrega são verificações distintas. A implementação não define o resultado esperado.
-Não definir mensagens literais, prazos, novas tentativas ou campos não especificados.
+# O ator abre o arquivo e verifica que os 23 fabricantes de estudo estão
+# nele, que nenhum dos três controles aparece [RN2] e que a ordem é a
+# mesma da consulta. [RN3]
 
-RESULTADOS ESPERADOS
-Os resultados aparecem junto a cada ação para permitir comparação passo a passo.
-Nenhum arquivo foi gerado ou cenário executado. Em futura execução registrar
-versão, data, massa, esperado, observado e evidência, sem declarar sucesso antecipado.
+# O ator repete a exportação em CSV [RN1] e confere as colunas e os
+# valores de cada fabricante exportado. [RN4]
 
-PENDÊNCIAS
-Consultar também SITUAÇÃO DAS REGRAS E BLOQUEIOS acima.
-Campos completos de PDF coletivo e individual, unidades e apresentação de dados ausentes precisam de decisão. O conteúdo CSV descrito não autoriza presumir igualdade dos demais formatos. Definir consulta vazia, fotografia temporal do inventário e recuperação após perda de resposta.
-"""
+# O ator vai para outra página da consulta e repete a exportação.
+# O arquivo continua com os 23 fabricantes. [RN2] [A2]
+
+
+# 🟠 [A1] - FORMATO AUSENTE
+# ---------------------------------------------------------------
+
+# O ator verifica que o sistema não oferece PDF ou CSV. Ele registra o
+# requisito como não atendido, porque os dois formatos são
+# obrigatórios. [RN1]
+
+
+# 🟠 [A2] - CONSULTA VAZIA
+# ---------------------------------------------------------------
+
+# O ator aplica um filtro que não retorna nenhum fabricante e solicita a
+# exportação. O comportamento esperado ainda não está definido; o ator
+# registra o que observar, sem presumir arquivo vazio.
+
+
+# 🟣 [RN1] FORMATOS OBRIGATÓRIOS
+# ---------------------------------------------------------------
+
+# A exportação coletiva oferece PDF e CSV. Cada arquivo entregue deve
+# estar no formato solicitado. A ficha de um registro individual é em
+# PDF.
+
+# 🟣 [RN2] RESULTADO COMPLETO DA CONSULTA
+# ---------------------------------------------------------------
+
+# A exportação contém todos os registros que atendem aos filtros, e não
+# apenas os da página exibida. Registros fora do filtro não entram.
+
+# 🟣 [RN3] ORDENAÇÃO
+# ---------------------------------------------------------------
+
+# O arquivo segue a ordenação escolhida na consulta.
+
+# 🟣 [RN4] COLUNAS DO CSV
+# ---------------------------------------------------------------
+
+# O CSV apresenta: Nome, Site Oficial, E-mail de Suporte e Telefone de
+# Suporte. Essas colunas vêm do levantamento e ainda não constam dos
+# CAs da Feature #35912; o conteúdo do PDF também não está definido.
+
+
+# Pendências de validação: docs/pendencias.md (UCS008).
+# Especificação completa: docs/fluxos/UCS008_exportacao_1.md.
